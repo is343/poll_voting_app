@@ -15,6 +15,7 @@ import routes from './routes/index';
 import authRoutes from './routes/auth';
 import pollRoutes from './routes/poll';
 
+import * as auth from './middleware/auth';
 
 // Initialize the express App
 const app = express();
@@ -23,56 +24,23 @@ const app = express();
 // MIDDLEWARE SETUP //
 //////////////////////
 app.use(helmet());
-// logger
-app.use(morgan('dev'));
+app.use(morgan('dev')); // logger
 app.use(compression());
-// parse application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: false }));
-// parse application/json
-app.use(express.json());
-// cors allows any domain can make a request for the api
-app.use(cors());
+app.use(express.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
+app.use(express.json()); // parse application/json
+app.use(cors()); // allows any domain can make a request for the api
 
 ////////////////
 // SET ROUTES //
 ////////////////
 
-// Get home
-app.get('/', (req, res) => {
-  res.json([
-    { '/api/customers': 'get customer data' }
-  ]);
-});
 
-import * as db from './models';
+app.use('/', routes);
 
-
-// GET ALL USERS
-app.get('/users', (req, res) => {
-  db.User.find({}, (err, user) => {
-    if (err) {
-      console.error(err);
-    } else {
-      res.json(user);
-    }
-  })
-});
-
-// GET ALL POLLS
-app.get('/polls', (req, res) => {
-  db.Poll.find({}, (err, poll) => {
-    if (err) {
-      console.error(err);
-    } else {
-      res.json(poll);
-    }
-  })
-});
-
-app.use('/api/users/:id/poll', pollRoutes);
-// app.use('/api/users/:id/poll',
-//   auth.loginRequired, auth.ensureCorrectUser,
-//   pollRoutes);
+// app.use('/api/users/:id/poll', pollRoutes);
+app.use('/api/users/:id/poll',
+  auth.loginRequired, auth.ensureCorrectUser,
+  pollRoutes);
 
 app.use('/api/auth', authRoutes);
 

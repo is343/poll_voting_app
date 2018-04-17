@@ -47,6 +47,9 @@ router.get('/polls', (req, res) => {
 // nested routes - merge params
 // deal with middleware in polls
 
+// /polls/pollId === voting
+// auth unique id check
+
 // dealing with logins
 
 export default router;

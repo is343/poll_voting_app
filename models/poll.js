@@ -24,7 +24,7 @@ const pollSchema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Poll",
+    ref: "User",
     required: true
   }
 }, {

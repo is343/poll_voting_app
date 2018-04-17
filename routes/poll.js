@@ -51,8 +51,8 @@ function createPoll (req, res, next) {
       user.polls.push(poll._id);
       user.save()
       .then((user) => {
-        return db.Poll.findById(poll._id)
-          .populate("userId")
+        return db.Poll.findById(poll._id).populate("userId", { username: true });
+        // returns new poll with extra populated information for use by client
       })
       .then((p) => {
         return res.status(200).json(p);
@@ -81,7 +81,7 @@ function deletePoll(req, res) {
   // find and update the correct poll
   db.Poll.findByIdAndRemove(req.params.pollId, (err) => {
     if (err) {
-      res.status(400).json(err);
+      res.status(404).json(err);
     } else {
       return res.status(200).json({ success : 'Poll deleted' });
     }
