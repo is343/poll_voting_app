@@ -48,7 +48,8 @@ function dummyData() {
 
 // INPORT / EXPORT MODELS
 import User from './user';
+import Poll from './poll';
 
 
-export {User};
+export { User, Poll };
 

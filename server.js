@@ -13,8 +13,7 @@ import helmet from 'helmet';
 
 import routes from './routes/index';
 import authRoutes from './routes/auth';
-// var routes = require('./routes/index');
-// var users = require('./routes/users');
+import pollRoutes from './routes/poll';
 
 
 // Initialize the express App
@@ -45,7 +44,37 @@ app.get('/', (req, res) => {
   ]);
 });
 
-app.use('/api', authRoutes);
+import * as db from './models';
+
+
+// GET ALL USERS
+app.get('/users', (req, res) => {
+  db.User.find({}, (err, user) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.json(user);
+    }
+  })
+});
+
+// GET ALL POLLS
+app.get('/polls', (req, res) => {
+  db.Poll.find({}, (err, poll) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.json(poll);
+    }
+  })
+});
+
+app.use('/api/users/:id/poll', pollRoutes);
+// app.use('/api/users/:id/poll',
+//   auth.loginRequired, auth.ensureCorrectUser,
+//   pollRoutes);
+
+app.use('/api/auth', authRoutes);
 
 
 //////////////

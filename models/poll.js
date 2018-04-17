@@ -10,7 +10,7 @@ const pollSchema = new mongoose.Schema({
     required: true,
     maxLength: 160
   },
-  options: [{
+  choices: [{
     type: String,
     required: true
   }],

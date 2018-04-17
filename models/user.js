@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
     required: true
   }, 
   polls: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
+    // type: mongoose.Schema.Types.ObjectId,
     ref: 'Poll'
   }]
 });

@@ -13,8 +13,40 @@ import jwt from 'jsonwebtoken';
 import * as db from '../models';
 import * as authRoutes from './auth';
 
-// import shortid from 'shortid';
 
+// Get home
+router.get('/', (req, res) => {
+  res.json([
+    { '/api/customers': 'get customer data' }
+  ]);
+});
 
+// GET ALL USERS
+router.get('/users', (req, res) => {
+  db.User.find({}, (err, user) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.json(user);
+    }
+  })
+});
+
+// GET ALL POLLS
+router.get('/polls', (req, res) => {
+  db.Poll.find({}, (err, poll) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.json(poll);
+    }
+  })
+});
+
+// auth middleware
+// nested routes - merge params
+// deal with middleware in polls
+
+// dealing with logins
 
 export default router;
