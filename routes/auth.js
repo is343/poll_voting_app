@@ -8,31 +8,26 @@ const router = express.Router();
 // import { check, body, validationResult, checkSchema } from 'express-validator/check';
 // import { matchedData, sanitize } from 'express-validator/filter';
 
-// import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 import * as db from '../models';
 
 
 
 
-router.post('/signin', signin);
+router.post('/login', login);
 router.post('/signup', signup);
 
-//////////////////
-// do this later//
-//////////////////
-// check unique name send 409 if taken
-
   
-function signin(req, res) {
+function login(req, res) {
   const username = req.body.username;
   const password = req.body.password;
   db.User.findOne({ username })
     .then((user) => {
-      // comparePassword is a User Schema method
+      // comparePassword is a userSchema method we created
       user.comparePassword(password, (err, isMatch) => {
         if (isMatch) {
-          const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+          const token = jwt.sign({ userId: user._id, username }, process.env.JWT_SECRET_KEY, { expiresIn : '1 day' });
           res.status(200).json({
             userId: user._id,
             username,
@@ -58,7 +53,7 @@ function signup(req, res) {
   });
   db.User.create(newUser)
     .then((user) => {
-      const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+      const token = jwt.sign({ userId: user._id, username }, process.env.JWT_SECRET_KEY, { expiresIn: '1 day' });
       res.status(200).json({
         userId: user._id,
         username,
