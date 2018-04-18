@@ -26,6 +26,10 @@ const pollSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true
+  },
+  username: {
+    type: String,
+    required: true,
   }
 }, {
     timestamps: true
@@ -35,7 +39,8 @@ const pollSchema = new mongoose.Schema({
 
 // Remove poll from user's list
 pollSchema.pre('remove', (next) => {
-  User.findById(this.userId).then(user => {
+  User.findById(this.userId)
+  .then((user) => {
     user.polls.remove(this.id);
     user.save().then((e) => {
       next();
