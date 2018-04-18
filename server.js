@@ -15,7 +15,7 @@ import routes from './routes/index';
 import authRoutes from './routes/auth';
 import pollRoutes from './routes/poll';
 
-import * as auth from './middleware/auth';
+import { loginRequired }from './middleware/auth';
 
 // Initialize the express App
 const app = express();
@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: false })); // parse application/x-www-for
 app.use(express.json()); // parse application/json
 app.use(cors()); // allows any domain can make a request for the api
 
+
 ////////////////
 // SET ROUTES //
 ////////////////
@@ -37,13 +38,26 @@ app.use(cors()); // allows any domain can make a request for the api
 
 app.use('/', routes);
 
-// app.use('/api/users/:id/poll', pollRoutes);
-app.use('/api/users/:id/poll',
-  auth.loginRequired, auth.ensureCorrectUser,
-  pollRoutes);
-
 app.use('/api/auth', authRoutes);
 
+// app.use('/api/users/:id/poll', loginRequired, pollRoutes);
+app.use('/api/poll', loginRequired, pollRoutes);
+
+
+// catch-all
+app.use('/*', (req, res) => {
+  res.status(404).json({'404': 'page not found'});
+});
+
+
+///////////////////////////////
+// ERROR HANDLING MIDDLEWARE //
+///////////////////////////////
+app.use((err, req, res, next) => {
+  console.error('Middleware error:', err);
+  res.status(400).json(err);
+  next();
+})
 
 //////////////
 // SET PORT //

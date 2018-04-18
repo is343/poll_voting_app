@@ -9,16 +9,17 @@ import shortid from 'shortid';
 
 import * as db from '../models';
 
+import { ensureCorrectUser } from '../middleware/auth';
 
 // CREATE - ADD NEW POLL TO DB
 router.post('/', createPoll);
 
 // UPDATE -  EDIT POLL 
-router.put('/:pollId', updatePoll);
+router.put('/:pollId', ensureCorrectUser, updatePoll);
 // router.put('/:pollId', checkCampgroundOwnership, updatePoll);
 
 // DESTROY - DELETE POLL FROM DB
-router.delete('/:pollId', deletePoll);
+router.delete('/:pollId', ensureCorrectUser, deletePoll);
 // router.delete('/:pollId', checkCampgroundOwnership, deletePoll);
 
 
@@ -33,7 +34,8 @@ function createPoll (req, res, next) {
    choices = req.body.choices,
    votes = Array(choices.length).fill(0),
    totalVotes = 0,
-   userId = req.params.id;
+   userId = res.locals.userId,
+   username = res.locals.username;
    
   const newPoll = new db.Poll({
     _id,
@@ -41,7 +43,8 @@ function createPoll (req, res, next) {
     choices,
     votes,
     totalVotes,
-    userId
+    userId,
+    username
   });
 
   db.Poll.create(newPoll)
@@ -51,7 +54,8 @@ function createPoll (req, res, next) {
       user.polls.push(poll._id);
       user.save()
       .then((user) => {
-        return db.Poll.findById(poll._id).populate("userId", { username: true });
+        return poll;
+        return db.Poll.findByIdAndUpdate(poll._id, { 'username': user.username });
         // returns new poll with extra populated information for use by client
       })
       .then((p) => {
@@ -88,28 +92,6 @@ function deletePoll(req, res) {
   });
 };
 
-
-
-////////////////////////
-// MOVE TO MIDDLEWARE //
-////////////////////////
-
-// this requires passport
-
-function checkCampgroundOwnership (req, res, next) {
-  Poll.findById(req.params.id, (err, foundPoll) => {
-    if (err || !foundPoll) {
-      res.status(404).json(err);
-    } else {
-      // does user own campground
-      if (foundPoll.userId.equals(req.user._id)) { // req.user._id is from passport
-        next();
-      } else {
-        res.status(400).json({error : 'You cannot edit that campground'});
-      }
-    }
-  });
-};
 
 export default router;
 

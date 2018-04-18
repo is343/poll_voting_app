@@ -1,8 +1,5 @@
 'use strict';
 
-import dotenv from 'dotenv'
-dotenv.config()
-
 import mongoose from 'mongoose';
 
 // SETUP
@@ -46,7 +43,7 @@ function dummyData() {
   });
 }
 
-// INPORT / EXPORT MODELS
+// IMPORT / EXPORT MODELS
 import User from './user';
 import Poll from './poll';
 
