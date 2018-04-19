@@ -9,19 +9,19 @@ import shortid from 'shortid';
 
 import * as db from '../models';
 
-import { ensureCorrectUser } from '../middleware/auth';
+import { loginRequired, ensureCorrectUser } from '../middleware/auth';
 
 // CREATE - ADD NEW POLL TO DB
-router.post('/', createPoll);
+router.post('/', loginRequired, createPoll);
 
 // UPDATE -  EDIT POLL 
-router.put('/:pollId', ensureCorrectUser, updatePoll);
-// router.put('/:pollId', checkCampgroundOwnership, updatePoll);
+router.put('/:pollId', loginRequired, ensureCorrectUser, updatePoll);
 
 // DESTROY - DELETE POLL FROM DB
-router.delete('/:pollId', ensureCorrectUser, deletePoll);
-// router.delete('/:pollId', checkCampgroundOwnership, deletePoll);
+router.delete('/:pollId', loginRequired, ensureCorrectUser, deletePoll);
 
+// CREATE - VOTE ON A POLL
+router.post('/:pollId', voteOnPoll);
 
 
 //////////////////////
@@ -91,6 +91,21 @@ function deletePoll(req, res) {
     }
   });
 };
+
+function voteOnPoll(req, res) {
+  const choiceIndex = req.body.choiceId; // index of choice from choices
+  db.Poll.findById(req.params.pollId, (err, foundPoll) => {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      let newValue = foundPoll.votes[choiceIndex] + 1;
+      foundPoll.votes.set(choiceIndex, newValue); // .set for altering mongoose array
+      foundPoll.totalVotes++;
+      foundPoll.save();
+      return res.status(200).json({ success: 'Voted' });
+    }
+  });
+}
 
 
 export default router;

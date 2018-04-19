@@ -15,7 +15,6 @@ import routes from './routes/index';
 import authRoutes from './routes/auth';
 import pollRoutes from './routes/poll';
 
-import { loginRequired }from './middleware/auth';
 
 // Initialize the express App
 const app = express();
@@ -40,8 +39,8 @@ app.use('/', routes);
 
 app.use('/api/auth', authRoutes);
 
-// app.use('/api/users/:id/poll', loginRequired, pollRoutes);
-app.use('/api/poll', loginRequired, pollRoutes);
+// app.use('/api/poll', loginRequired, pollRoutes);
+app.use('/api/poll', pollRoutes);
 
 
 // catch-all

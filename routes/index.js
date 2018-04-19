@@ -50,6 +50,9 @@ router.get('/polls', (req, res) => {
 // /polls/pollId === voting
 // auth unique id check
 
+
+// check to make sure that there are at least two (unique) poll choices!
+
 // dealing with logins
 
 export default router;
