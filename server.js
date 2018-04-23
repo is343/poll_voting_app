@@ -3,7 +3,6 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -33,20 +32,11 @@ app.use(cors()); // allows any domain can make a request for the api
 ////////////////
 // SET ROUTES //
 ////////////////
-
-
 app.use('/', routes);
 
 app.use('/api/auth', authRoutes);
 
-// app.use('/api/poll', loginRequired, pollRoutes);
 app.use('/api/poll', pollRoutes);
-
-
-// catch-all
-app.use('/*', (req, res) => {
-  res.status(404).json({'404': 'page not found'});
-});
 
 
 ///////////////////////////////
@@ -57,6 +47,13 @@ app.use((err, req, res, next) => {
   res.status(400).json(err);
   next();
 })
+
+///////////////
+// catch-all //
+///////////////
+app.use('/*', (req, res) => {
+  res.status(404).json({ '404': 'page not found' });
+});
 
 //////////////
 // SET PORT //

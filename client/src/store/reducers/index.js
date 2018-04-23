@@ -1,6 +1,8 @@
 import {combineReducers} from 'redux';
-import customerReducer from './customer';
+import userReducer from './user';
+import pollReducer from './poll';
 
 export default combineReducers({
-  customers: customerReducer
+  users: userReducer,
+  polls: pollReducer
 })

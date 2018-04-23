@@ -2,16 +2,10 @@
 
 import mongoose from 'mongoose';
 import express from 'express';
-
-const router = express.Router();
-
-// import { check, body, validationResult, checkSchema } from 'express-validator/check';
-// import { matchedData, sanitize } from 'express-validator/filter';
-
 import jwt from 'jsonwebtoken';
-
 import * as db from '../models';
 import * as authRoutes from './auth';
+const router = express.Router();
 
 
 // Get home
@@ -43,16 +37,5 @@ router.get('/polls', (req, res) => {
   })
 });
 
-// auth middleware
-// nested routes - merge params
-// deal with middleware in polls
-
-// /polls/pollId === voting
-// auth unique id check
-
-
-// check to make sure that there are at least two (unique) poll choices!
-
-// dealing with logins
 
 export default router;

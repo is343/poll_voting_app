@@ -5,8 +5,6 @@ import express from 'express';
 
 const router = express.Router();
 
-// import { check, body, validationResult, checkSchema } from 'express-validator/check';
-// import { matchedData, sanitize } from 'express-validator/filter';
 
 import jwt from 'jsonwebtoken';
 
@@ -27,7 +25,7 @@ function login(req, res) {
       // comparePassword is a userSchema method we created
       user.comparePassword(password, (err, isMatch) => {
         if (isMatch) {
-          const token = jwt.sign({ userId: user._id, username }, process.env.JWT_SECRET_KEY, { expiresIn : '1 day' });
+          const token = jwt.sign({ userId: user._id, username }, process.env.JWT_SECRET_KEY, { expiresIn : '2 hours' });
           res.status(200).json({
             userId: user._id,
             username,
@@ -53,7 +51,7 @@ function signup(req, res) {
   });
   db.User.create(newUser)
     .then((user) => {
-      const token = jwt.sign({ userId: user._id, username }, process.env.JWT_SECRET_KEY, { expiresIn: '1 day' });
+      const token = jwt.sign({ userId: user._id, username }, process.env.JWT_SECRET_KEY, { expiresIn: '2 hours' });
       res.status(200).json({
         userId: user._id,
         username,
