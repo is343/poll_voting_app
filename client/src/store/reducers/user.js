@@ -1,12 +1,12 @@
-import {GET_USERS} from '../actions/constants'
+import { LOGIN } from "../actions/constants";
 
-const userReducer = (state = [], {type, payload}) => {
+const userReducer = (state = [], { type, payload }) => {
   switch (type) {
-    case GET_USERS:
-      return payload
+    case LOGIN:
+      return payload;
     default:
-      return state
+      return state;
   }
-}
+};
 
 export default userReducer;
