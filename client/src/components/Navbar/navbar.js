@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
+
+import { login, logout, alertOpen, alertClose } from "../../store/actions/auth";
+import { navigateTo } from "../../store/actions/general";
 
 /////////////////
 // MATERIAL-UI //
@@ -17,6 +20,13 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Switch from "material-ui/Switch";
 import { FormControlLabel, FormGroup } from "material-ui/Form";
 import Menu, { MenuItem } from "material-ui/Menu";
+// DIALOG
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "material-ui/Dialog";
 
 const styles = {
   root: {
@@ -31,10 +41,11 @@ const styles = {
   }
 };
 
-class MenuAppBar extends React.Component {
+class Navbar extends React.Component {
   state = {
-    auth: true,
-    anchorEl: null
+    auth: this.props.auth,
+    anchorEl: null,
+    open: this.props.alert
   };
 
   handleChange = event => {
@@ -53,7 +64,8 @@ class MenuAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { auth } = this.props;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
@@ -93,32 +105,64 @@ class MenuAppBar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={this.props.alertOpen}>Profile</MenuItem>
                   <MenuItem onClick={this.handleChange}>Logout</MenuItem>
                 </Menu>
               </div>
             ) : (
-              <Button color="inherit" onClick={this.handleChange}>
+              <Button color="inherit" onClick={this.props.login}>
                 Login
               </Button>
             )}
           </Toolbar>
         </AppBar>
+        <Dialog
+          open={this.state.open}
+          onClose={this.props.alertOpen}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Use Google's location service?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Let Google help apps determine location. This means sending
+              anonymous location data to Google, even when no apps are running.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.props.alertOpen} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={this.props.alertOpen} color="primary" autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
 }
 
-MenuAppBar.propTypes = {
+Navbar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => null;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth.auth,
+    alert: state.auth.alert
+  };
+}
 
-const dispatchToProps = dispatch => ({
-  navigateTo: location => dispatch(push(location))
-});
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    { login, navigateTo, alertOpen, alertClose },
+    dispatch
+  );
+}
 
-export default connect(mapStateToProps, dispatchToProps)(
-  withStyles(styles)(MenuAppBar)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(Navbar)
 );

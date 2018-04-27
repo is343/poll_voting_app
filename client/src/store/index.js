@@ -5,6 +5,8 @@ import createHistory from "history/createBrowserHistory";
 
 import ReduxPromise from "redux-promise";
 import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+
 import rootReducer from "./reducers";
 
 const history = createHistory();
@@ -17,11 +19,11 @@ if (process.env.NODE_ENV !== `production`) {
 }
 
 // setup for redux devtools extension
-const withDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const withDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   rootReducer,
-  withDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
 export { store, history };

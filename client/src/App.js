@@ -6,14 +6,14 @@ import { Route } from "react-router";
 import { store, history } from "./store";
 import "./App.css";
 import Users from "./components/User/users";
-import AppBar from "./components/Navbar/appbar";
+import Navbar from "./components/Navbar/navbar";
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <div>
-          <AppBar />
+          <Navbar />
           <ConnectedRouter history={history}>
             <div>
               <Route exact path="/1" component={Users} />
