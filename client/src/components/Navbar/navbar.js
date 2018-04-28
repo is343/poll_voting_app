@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { login, logout, alertOpen, alertClose } from "../../store/actions/auth";
+import { login, logout, alertClose } from "../../store/actions/auth";
 import { navigateTo } from "../../store/actions/general";
 
 /////////////////
@@ -43,15 +43,7 @@ const styles = {
 
 class Navbar extends React.Component {
   state = {
-    auth: this.props.auth,
-    anchorEl: null,
-    open: this.props.alert
-  };
-
-  handleChange = event => {
-    this.setState(prevState => ({
-      auth: !prevState.auth
-    }));
+    anchorEl: null
   };
 
   handleMenu = event => {
@@ -63,8 +55,7 @@ class Navbar extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { auth } = this.props;
+    const { classes, auth } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -106,7 +97,7 @@ class Navbar extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.props.alertOpen}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleChange}>Logout</MenuItem>
+                  <MenuItem onClick={this.props.logout}>Logout</MenuItem>
                 </Menu>
               </div>
             ) : (
@@ -117,26 +108,20 @@ class Navbar extends React.Component {
           </Toolbar>
         </AppBar>
         <Dialog
-          open={this.state.open}
-          onClose={this.props.alertOpen}
+          open={this.props.alert}
+          onClose={this.props.alertClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            {"Use Google's location service?"}
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">Error</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Let Google help apps determine location. This means sending
-              anonymous location data to Google, even when no apps are running.
+              {this.props.errorMessage}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.alertOpen} color="primary">
-              Disagree
-            </Button>
-            <Button onClick={this.props.alertOpen} color="primary" autoFocus>
-              Agree
+            <Button onClick={this.props.alertClose} color="primary" autoFocus>
+              Okay
             </Button>
           </DialogActions>
         </Dialog>
@@ -152,13 +137,14 @@ Navbar.propTypes = {
 function mapStateToProps(state) {
   return {
     auth: state.auth.auth,
-    alert: state.auth.alert
+    alert: state.auth.alert,
+    errorMessage: state.auth.errorMessage
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { login, navigateTo, alertOpen, alertClose },
+    { login, logout, navigateTo, alertClose },
     dispatch
   );
 }

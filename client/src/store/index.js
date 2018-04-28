@@ -3,7 +3,7 @@ import { createLogger } from "redux-logger";
 import { routerMiddleware } from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 
-import ReduxPromise from "redux-promise";
+import promiseMiddleware from "redux-promise-middleware";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
@@ -11,7 +11,7 @@ import rootReducer from "./reducers";
 
 const history = createHistory();
 
-const middleware = [routerMiddleware(history), thunk, ReduxPromise];
+const middleware = [routerMiddleware(history), thunk, promiseMiddleware()];
 
 if (process.env.NODE_ENV !== `production`) {
   const logger = createLogger({ collapsed: true });

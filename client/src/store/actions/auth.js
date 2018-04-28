@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "./constants";
+import { LOGIN, LOGOUT, ALERT_CLOSE } from "./constants";
 import axios from "axios";
 
 export function login() {
@@ -6,6 +6,7 @@ export function login() {
     username: "test2",
     password: "password"
   });
+
   // axios
   //   .post("/api/auth/login", {
   //     username: "test2",
@@ -27,9 +28,6 @@ export function logout() {
   return { type: LOGOUT, payload: { auth: false } };
 }
 
-export function alertOpen() {
-  return { type: "ALERT_OPEN", payload: { alert: true } };
-}
 export function alertClose() {
-  return { type: "ALERT_CLOSE", payload: { alert: false } };
+  return { type: ALERT_CLOSE, payload: { alert: false } };
 }

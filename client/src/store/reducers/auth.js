@@ -1,25 +1,35 @@
-import { LOGIN, LOGOUT, ALERT_OPEN, ALERT_CLOSE } from "../actions/constants";
+import {
+  LOGIN_FULFILLED,
+  LOGIN_REJECTED,
+  LOGOUT,
+  ALERT_CLOSE
+} from "../actions/constants";
 
 const defaultState = {
   auth: false,
-  alert: false
+  alert: false,
+  errorMessage: ""
 };
 
-const userReducer = (state = defaultState, { type, payload }) => {
+const authReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
-    case LOGIN:
-      console.log(payload);
+    case LOGIN_FULFILLED:
       localStorage.setItem("token", payload.data.token);
       return { ...state, auth: true };
+    case LOGIN_REJECTED:
+      return {
+        ...state,
+        auth: false,
+        alert: true,
+        errorMessage: payload.response.data.message
+      };
     case LOGOUT:
       return { ...state, auth: payload.auth };
-    case ALERT_OPEN:
-      return { ...state, alert: payload.alert };
     case ALERT_CLOSE:
-      return { ...state, alert: payload.alert };
+      return { ...state, alert: payload.alert, errorMessage: "" };
     default:
       return state;
   }
 };
 
-export default userReducer;
+export default authReducer;
