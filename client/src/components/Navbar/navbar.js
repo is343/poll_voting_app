@@ -15,11 +15,12 @@ import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from "@material-ui/icons/Home";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Switch from "material-ui/Switch";
 import { FormControlLabel, FormGroup } from "material-ui/Form";
 import Menu, { MenuItem } from "material-ui/Menu";
+import TextField from "material-ui/TextField";
 // DIALOG
 import Dialog, {
   DialogActions,
@@ -43,7 +44,10 @@ const styles = {
 
 class Navbar extends React.Component {
   state = {
-    anchorEl: null
+    loginOpen: false,
+    anchorEl: null,
+    username: "",
+    password: ""
   };
 
   handleMenu = event => {
@@ -52,6 +56,24 @@ class Navbar extends React.Component {
 
   handleClose = () => {
     this.setState({ anchorEl: null });
+  };
+
+  handleLoginClickOpen = () => {
+    this.setState({ loginOpen: true });
+  };
+
+  handleLoginClose = () => {
+    this.setState({ loginOpen: false });
+  };
+
+  handleLoginFieldsChange = name => event => {
+    this.setState({
+      [name]: event.target.value
+    });
+  };
+
+  clearLoginFields = () => {
+    this.setState({ username: "", password: "" });
   };
 
   render() {
@@ -69,7 +91,7 @@ class Navbar extends React.Component {
               aria-label="Menu"
               onClick={() => this.props.navigateTo("/1")}
             >
-              <MenuIcon />
+              <HomeIcon />
             </IconButton>
             <Typography
               variant="title"
@@ -97,13 +119,74 @@ class Navbar extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.props.alertOpen}>Profile</MenuItem>
-                  <MenuItem onClick={this.props.logout}>Logout</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      this.handleClose();
+                      this.props.logout();
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
                 </Menu>
               </div>
             ) : (
-              <Button color="inherit" onClick={this.props.login}>
-                Login
-              </Button>
+              <div>
+                <Button color="inherit" onClick={this.handleLoginClickOpen}>
+                  Login
+                </Button>
+                <Dialog
+                  open={this.state.loginOpen}
+                  onClose={this.handleLoginClose}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle id="form-dialog-title">Login</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>* required</DialogContentText>
+                    <TextField
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="name"
+                      label="username"
+                      fullWidth
+                      onChange={this.handleLoginFieldsChange("username")}
+                    />
+                    <TextField
+                      required
+                      margin="dense"
+                      id="password-input"
+                      label="password"
+                      type="password"
+                      fullWidth
+                      onChange={this.handleLoginFieldsChange("password")}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={() => {
+                        this.handleLoginClose();
+                        this.clearLoginFields();
+                      }}
+                      color="primary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.handleLoginClose();
+                        this.props.login(
+                          this.state.username,
+                          this.state.password
+                        );
+                        this.clearLoginFields();
+                      }}
+                      color="primary"
+                    >
+                      Login
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             )}
           </Toolbar>
         </AppBar>

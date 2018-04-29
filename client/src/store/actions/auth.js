@@ -1,30 +1,16 @@
 import { LOGIN, LOGOUT, ALERT_CLOSE } from "./constants";
 import axios from "axios";
 
-export function login() {
+export function login(username, password) {
   const request = axios.post("/api/auth/login", {
-    username: "test2",
-    password: "password"
+    username,
+    password
   });
-
-  // axios
-  //   .post("/api/auth/login", {
-  //     username: "test2",
-  //     password: "password"
-  //   })
-  //   .then(res => {
-  //     console.log(res.data);
-  //     localStorage.setItem("token", res.data.token);
-  //     return { type: LOGIN, payload: { auth: true } };
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //   });
   return { type: LOGIN, payload: request };
 }
 
 export function logout() {
-  localStorage.setItem("token", null);
+  localStorage.removeItem("token");
   return { type: LOGOUT, payload: { auth: false } };
 }
 

@@ -6,7 +6,7 @@ import {
 } from "../actions/constants";
 
 const defaultState = {
-  auth: false,
+  auth: localStorage.getItem("token") ? true : false,
   alert: false,
   errorMessage: ""
 };
