@@ -9,6 +9,7 @@ import Users from "./containers/User/users";
 import Navbar from "./containers/Navbar/navbar";
 import CreatePoll from "./containers/CreatePoll/create_poll";
 import Poll from "./containers/SinglePoll/poll";
+import AllPolls from "./containers/AllPolls/all_polls";
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
               <Route exact path="/polls" component={CreatePoll} />
               <Route exact path="/poll" component={CreatePoll} />
               <Route exact path="/poll/:poll" component={Poll} />
+              <Route exact path="/1" component={AllPolls} />
             </div>
           </ConnectedRouter>
         </div>

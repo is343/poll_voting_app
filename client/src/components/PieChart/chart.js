@@ -13,20 +13,37 @@ import {
   PieSeries
 } from "react-jsx-highcharts";
 
+// .pie {
+//   width: 200px;
+//   height: 200px;
+//   margin: none;
+//   padding: none;
+// }
+
 class Poll extends Component {
   render() {
+    let divStyle = { height: 400, width: 400 };
+    let pieCenter = [170, 150];
+    let pieSize = [150];
+    // to allow for resizing for the main page
+    if (this.props.isMini) {
+      divStyle = { height: 200, width: 200 };
+      pieCenter = [85, 55];
+      pieSize = [50];
+    }
+
     const { title, pieData } = this.props;
 
     return (
-      <div className="pie">
+      <div className="pie" style={divStyle}>
         <HighchartsChart>
           <Title>{title}</Title>
           <PieSeries
-            id="total-consumption"
-            name="Total consumption"
+            id={title}
+            name={title}
             data={pieData}
-            center={[170, 150]}
-            size={150}
+            center={pieCenter}
+            size={pieSize}
             showInLegend={false}
           />
         </HighchartsChart>

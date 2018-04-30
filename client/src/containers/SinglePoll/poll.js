@@ -13,7 +13,7 @@ import { CircularProgress } from "material-ui/Progress";
 
 const styles = theme => ({
   progress: {
-    margin: theme.spacing.unit * 2
+    // margin: theme.spacing.unit * 2
   }
 });
 
@@ -26,6 +26,7 @@ class Poll extends Component {
     const { classes } = this.props;
     const { title, choices, votes } = this.props.activePoll;
     let pieData;
+    let noVotesTest = true;
     if (choices) {
       pieData = Array(choices.length).fill({
         name: undefined,
@@ -37,15 +38,23 @@ class Poll extends Component {
           y: votes[index]
         };
       });
+      // check for votes and create a truthy value to prevent a vote-less pie chart from being created below
+      noVotesTest = votes.filter(val => {
+        return val !== 0;
+      }).length;
     }
 
     return (
       <div className="pie">
-        {pieData ? (
+        {pieData && noVotesTest ? (
           <PieChart pieData={pieData} title={title} />
         ) : (
           <div className="center">
-            <CircularProgress className={classes.progress} />
+            {!noVotesTest ? (
+              <h2>No votes to show</h2>
+            ) : (
+              <CircularProgress className={classes.progress} />
+            )}
           </div>
         )}
       </div>
