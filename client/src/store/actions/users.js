@@ -1,9 +1,10 @@
 import { LOGIN } from "./constants";
+import axios from "axios";
 
 export const login = () => dispatch => {
-  return fetch("/users")
-    .then(res => res.json())
-    .then(users => {
-      return dispatch({ type: LOGIN, payload: users });
-    });
+  const token = localStorage.getItem("token");
+  const request = axios.get("/users", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return dispatch({ type: LOGIN, payload: request });
 };

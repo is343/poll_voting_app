@@ -66,9 +66,9 @@ class Navbar extends React.Component {
     this.setState({ loginOpen: false });
   };
 
-  handleLoginFieldsChange = name => event => {
+  handleLoginFieldsChange = event => {
     this.setState({
-      [name]: event.target.value
+      [event.target.name]: event.target.value
     });
   };
 
@@ -89,7 +89,7 @@ class Navbar extends React.Component {
               className={classes.menuButton}
               color="inherit"
               aria-label="Menu"
-              onClick={() => this.props.navigateTo("/1")}
+              onClick={() => this.props.navigateTo("/")}
             >
               <HomeIcon />
             </IconButton>
@@ -118,11 +118,19 @@ class Navbar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.props.alertOpen}>Profile</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      this.handleClose();
+                      this.props.navigateTo("/poll");
+                    }}
+                  >
+                    Create Poll
+                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       this.handleClose();
                       this.props.logout();
+                      this.props.navigateTo("/");
                     }}
                   >
                     Logout
@@ -148,17 +156,19 @@ class Navbar extends React.Component {
                       margin="dense"
                       id="name"
                       label="username"
+                      name="username"
                       fullWidth
-                      onChange={this.handleLoginFieldsChange("username")}
+                      onChange={this.handleLoginFieldsChange}
                     />
                     <TextField
                       required
                       margin="dense"
                       id="password-input"
                       label="password"
+                      name="password"
                       type="password"
                       fullWidth
-                      onChange={this.handleLoginFieldsChange("password")}
+                      onChange={this.handleLoginFieldsChange}
                     />
                   </DialogContent>
                   <DialogActions>
@@ -167,7 +177,7 @@ class Navbar extends React.Component {
                         this.handleLoginClose();
                         this.clearLoginFields();
                       }}
-                      color="primary"
+                      color="secondary"
                     >
                       Cancel
                     </Button>
@@ -214,7 +224,14 @@ class Navbar extends React.Component {
 }
 
 Navbar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  auth: PropTypes.bool.isRequired,
+  alert: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired,
+  alertClose: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

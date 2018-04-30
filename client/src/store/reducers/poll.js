@@ -1,12 +1,23 @@
-import { GET_POLLS } from '../actions/constants'
+import {
+  GET_POLLS,
+  GET_POLLS_FULFILLED,
+  CREATE_POLL_FULFILLED
+} from "../actions/constants";
+import { navigateTo } from "../actions/general";
 
-const pollReducer = (state = [], { type, payload }) => {
+const defaultState = {
+  polls: []
+};
+
+const pollReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
     case GET_POLLS:
-      return payload
+      return payload;
+    case GET_POLLS_FULFILLED:
+      return payload.data;
     default:
-      return state
+      return state;
   }
-}
+};
 
 export default pollReducer;

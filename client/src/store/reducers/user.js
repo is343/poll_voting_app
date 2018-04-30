@@ -7,7 +7,8 @@ const defaultState = {
 const userReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
     case LOGIN:
-      return payload;
+      console.log(payload);
+      return payload.data;
     default:
       return state;
   }

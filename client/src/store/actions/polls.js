@@ -1,9 +1,11 @@
 import { GET_POLLS } from "./constants";
+import axios from "axios";
 
 export const getPolls = () => dispatch => {
-  return fetch("/users")
-    .then(res => res.json())
-    .then(polls => {
-      return dispatch({ type: GET_POLLS, payload: polls });
-    });
+  const url = "/users";
+  const token = localStorage.getItem("token");
+  const request = axios.get(url, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return dispatch({ type: GET_POLLS, payload: request });
 };

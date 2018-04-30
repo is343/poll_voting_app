@@ -11,6 +11,12 @@ export const ALERT_CLOSE = "ALERT_CLOSE";
 // POLLS //
 ///////////
 export const GET_POLLS = "GET_POLLS";
+export const GET_POLLS_FULFILLED = "GET_POLLS_FULFILLED";
+export const GET_POLLS_REJECTED = "GET_POLLS_REJECTED";
+export const CREATE_POLL = "CREATE_POLL";
+export const CREATE_POLL_FULFILLED = "CREATE_POLL_FULFILLED";
+export const CREATE_POLL_REJECTED = "CREATE_POLL_REJECTED";
+export const REQUEST_REJECTED = "CREATE_POLL_REJECTED";
 
 ///////////
 // USERS //
