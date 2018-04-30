@@ -18,7 +18,6 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 
-
 const styles = theme => ({
   container: {
     display: "flex",
@@ -79,13 +78,12 @@ class CreatePoll extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    // invoke onSave and pass a copy of all values in state
-    const blankTitle = (this.state.title === '');
+    const blankTitle = this.state.title === "";
     const blankChoices = this.state.choices.some(val => {
-      return val === '';
+      return val === "";
     });
     if (blankTitle || blankChoices) {
-      return this.setState({submitAttempt: true});
+      return this.setState({ submitAttempt: true });
     }
     this.props.createPoll({ ...this.state });
     this.setState({
@@ -101,8 +99,8 @@ class CreatePoll extends Component {
 
     let choiceInputs = this.state.choices.map((choice, index) => (
       <div key={`choice-${index}`}>
-        <TextField 
-          required
+        <TextField
+          required={index < 2 ? true : false}
           margin="dense"
           id="choices"
           name={`choice-${index}`}
@@ -114,9 +112,19 @@ class CreatePoll extends Component {
           className={classes.textField}
           margin="normal"
           error={choices[index] === "" && submitAttempt === true}
-          helperText={submitAttempt === true ? (index < 2 ? (choices[index] === '' ? 'At least two options required and options may not be blank!' : '') : (choices[index] === '' ? 'Options may not be blank!' : '')) : ''}
+          helperText={
+            submitAttempt === true
+              ? index < 2
+                ? choices[index] === ""
+                  ? "At least two choices required. Choices must not be blank!"
+                  : ""
+                : choices[index] === ""
+                  ? "Choices may not be blank!"
+                  : ""
+              : ""
+          }
         />
-        {this.state.choices.length > 2 ? (
+        {choices.length > 2 ? (
           <IconButton
             name={`choice-${index}`}
             onClick={this.handleDeleteChoice}
@@ -145,7 +153,13 @@ class CreatePoll extends Component {
           className={classes.textField}
           margin="normal"
           error={title === "" && submitAttempt === true}
-          helperText={submitAttempt === true ? (title === '' ? 'Title required!' : '') : ''}
+          helperText={
+            submitAttempt === true
+              ? title === ""
+                ? "Title required!"
+                : ""
+              : ""
+          }
         />
         {choiceInputs}
         <Button
@@ -199,4 +213,3 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(CreatePoll)
 );
-

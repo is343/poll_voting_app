@@ -47,7 +47,8 @@ class Navbar extends React.Component {
     loginOpen: false,
     anchorEl: null,
     username: "",
-    password: ""
+    password: "",
+    submitAttempt: false
   };
 
   handleMenu = event => {
@@ -63,7 +64,12 @@ class Navbar extends React.Component {
   };
 
   handleLoginClose = () => {
-    this.setState({ loginOpen: false });
+    this.setState({
+      loginOpen: false,
+      username: "",
+      password: "",
+      submitAttempt: false
+    });
   };
 
   handleLoginFieldsChange = event => {
@@ -72,140 +78,86 @@ class Navbar extends React.Component {
     });
   };
 
-  clearLoginFields = () => {
-    this.setState({ username: "", password: "" });
+  handleSubmit = event => {
+    const { username, password } = this.state;
+    const blankUsername = username === "";
+    const blankPassword = password === "";
+    if (blankUsername || blankPassword) {
+      return this.setState({ submitAttempt: true });
+    }
+    this.props.login(username, password);
+    this.setState({
+      loginOpen: false,
+      username: "",
+      password: "",
+      submitAttempt: false
+    });
   };
 
   render() {
     const { classes, auth } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, username, password, submitAttempt } = this.state;
     const open = Boolean(anchorEl);
 
-    return (
-      <div className={classes.root}>
+    return <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-              onClick={() => this.props.navigateTo("/")}
-            >
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={() => this.props.navigateTo("/")}>
               <HomeIcon />
             </IconButton>
-            <Typography
-              variant="title"
-              color="inherit"
-              className={classes.flex}
-            >
+            <Typography variant="title" color="inherit" className={classes.flex}>
               Title
             </Typography>
-            {auth ? (
-              <div>
-                <IconButton
-                  aria-owns={open ? "menu-appbar" : null}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                >
+            {auth ? <div>
+                <IconButton aria-owns={open ? "menu-appbar" : null} aria-haspopup="true" onClick={this.handleMenu} color="inherit">
                   <AccountCircle />
                 </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem
-                    onClick={() => {
+                <Menu id="menu-appbar" anchorEl={anchorEl} anchorOrigin={{ vertical: "top", horizontal: "right" }} transformOrigin={{ vertical: "top", horizontal: "right" }} open={open} onClose={this.handleClose}>
+                  <MenuItem onClick={() => {
                       this.handleClose();
                       this.props.navigateTo("/poll");
-                    }}
-                  >
+                    }}>
                     Create Poll
                   </MenuItem>
-                  <MenuItem
-                    onClick={() => {
+                  <MenuItem onClick={() => {
                       this.handleClose();
                       this.props.logout();
                       this.props.navigateTo("/");
-                    }}
-                  >
+                    }}>
                     Logout
                   </MenuItem>
                 </Menu>
-              </div>
-            ) : (
-              <div>
+              </div> : <div>
                 <Button color="inherit" onClick={this.handleLoginClickOpen}>
                   Login
                 </Button>
-                <Dialog
-                  open={this.state.loginOpen}
-                  onClose={this.handleLoginClose}
-                  aria-labelledby="form-dialog-title"
-                >
+                <Dialog open={this.state.loginOpen} onClose={this.handleLoginClose} aria-labelledby="form-dialog-title">
                   <DialogTitle id="form-dialog-title">Login</DialogTitle>
                   <DialogContent>
                     <DialogContentText>* required</DialogContentText>
-                    <TextField
-                      autoFocus
-                      required
-                      margin="dense"
-                      id="name"
-                      label="username"
-                      name="username"
-                      fullWidth
-                      onChange={this.handleLoginFieldsChange}
-                    />
-                    <TextField
-                      required
-                      margin="dense"
-                      id="password-input"
-                      label="password"
-                      name="password"
-                      type="password"
-                      fullWidth
-                      onChange={this.handleLoginFieldsChange}
-                    />
+                    <TextField autoFocus required margin="dense" id="name" label="username" name="username" fullWidth onChange={this.handleLoginFieldsChange} error={username === "" && submitAttempt === true} helperText={submitAttempt === true ? (username === "" ? "Username required!" : "") : ""} />
+                    <TextField required margin="dense" id="password-input" label="password" name="password" type="password" fullWidth onChange={this.handleLoginFieldsChange} error={password === "" && submitAttempt === true}
+          helperText={
+            submitAttempt === true
+              ? password === ""
+                ? "Password required!"
+                : ""
+              : ""
+          } />
                   </DialogContent>
                   <DialogActions>
-                    <Button
-                      onClick={() => {
-                        this.handleLoginClose();
-                        this.clearLoginFields();
-                      }}
-                      color="secondary"
-                    >
+                    <Button onClick={this.handleLoginClose} color="secondary">
                       Cancel
                     </Button>
-                    <Button
-                      onClick={() => {
-                        this.handleLoginClose();
-                        this.props.login(
-                          this.state.username,
-                          this.state.password
-                        );
-                        this.clearLoginFields();
-                      }}
-                      color="primary"
-                    >
+                    <Button onClick={this.handleSubmit} color="primary">
                       Login
                     </Button>
                   </DialogActions>
                 </Dialog>
-              </div>
-            )}
+              </div>}
           </Toolbar>
         </AppBar>
-        <Dialog
-          open={this.props.alert}
-          onClose={this.props.alertClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
+        <Dialog open={this.props.alert} onClose={this.props.alertClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">Error</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -218,8 +170,7 @@ class Navbar extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
-    );
+      </div>;
   }
 }
 
