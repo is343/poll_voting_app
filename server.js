@@ -29,7 +29,7 @@ app.use(cors()); // allows any domain can make a request for the api
 ////////////////
 // SET ROUTES //
 ////////////////
-app.use("/", routes);
+app.use("/api", routes);
 
 app.use("/api/auth", authRoutes);
 

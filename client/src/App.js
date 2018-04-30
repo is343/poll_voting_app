@@ -5,14 +5,10 @@ import { Route } from "react-router";
 
 import { store, history } from "./store";
 import "./App.css";
-import Users from "./components/User/users";
-import Navbar from "./components/Navbar/navbar";
-import CreatePoll from "./components/CreatePoll/create_poll";
-
-const Poll = props => {
-  console.log(props);
-  return <h1> Poll {props.match.params.poll} </h1>;
-};
+import Users from "./containers/User/users";
+import Navbar from "./containers/Navbar/navbar";
+import CreatePoll from "./containers/CreatePoll/create_poll";
+import Poll from "./containers/SinglePoll/poll";
 
 class App extends Component {
   render() {

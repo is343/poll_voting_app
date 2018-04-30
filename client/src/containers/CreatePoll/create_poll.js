@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { createPoll } from "../../store/actions/general";
+import { createPoll } from "../../store/actions/polls";
 
 import axios from "axios";
 /////////////////
@@ -15,8 +15,6 @@ import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
-
-import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 
 const styles = theme => ({
   container: {
@@ -187,23 +185,13 @@ class CreatePoll extends Component {
   }
 }
 
-// CreatePoll.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   auth: PropTypes.bool.isRequired,
-//   alert: PropTypes.bool.isRequired,
-//   errorMessage: PropTypes.string,
-//   login: PropTypes.func.isRequired,
-//   logout: PropTypes.func.isRequired,
-//   navigateTo: PropTypes.func.isRequired,
-//   alertClose: PropTypes.func.isRequired
-// };
+CreatePoll.propTypes = {
+  classes: PropTypes.object.isRequired,
+  createPoll: PropTypes.func.isRequired
+};
 
 function mapStateToProps(state) {
-  return {
-    auth: state.auth.auth,
-    alert: state.auth.alert,
-    errorMessage: state.auth.errorMessage
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {

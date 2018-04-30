@@ -1,11 +1,45 @@
-import { GET_POLLS } from "./constants";
+import {
+  GET_POLLS,
+  GET_ONE_POLL,
+  CREATE_POLL_REJECTED,
+  REQUEST_REJECTED
+} from "./constants";
 import axios from "axios";
+import { push } from "react-router-redux";
+import { history } from "../../store";
 
 export const getPolls = () => dispatch => {
-  const url = "/users";
-  const token = localStorage.getItem("token");
-  const request = axios.get(url, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+  const url = "api/polls";
+  const request = axios.get(url);
   return dispatch({ type: GET_POLLS, payload: request });
+};
+
+export const getOnePoll = pollId => dispatch => {
+  const url = "/api/poll/" + pollId; // for some reason, if I axios.get with a string litteral it becomes `/poll/api/poll/${pollId}`
+  const request = axios.get(url);
+  return dispatch({
+    type: GET_ONE_POLL,
+    payload: request
+  });
+};
+
+export const createPoll = pollData => dispatch => {
+  const url = "/api/poll";
+  const token = localStorage.getItem("token");
+  const request = axios
+    .post(url, pollData, {
+      "Content-Type": "application/json",
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      console.log("res", res);
+      console.log(res.data._id);
+      history.push(`/poll/${res.data._id}`);
+    })
+    .catch(error => {
+      if (error.response) {
+        return dispatch({ type: CREATE_POLL_REJECTED, payload: error });
+      }
+      return dispatch({ type: REQUEST_REJECTED, payload: error });
+    });
 };

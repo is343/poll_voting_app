@@ -4,6 +4,7 @@ import {
   LOGOUT,
   ALERT_CLOSE,
   GET_POLLS_REJECTED,
+  GET_ONE_POLL_REJECTED,
   CREATE_POLL_REJECTED,
   REQUEST_REJECTED
 } from "../actions/constants";
@@ -22,6 +23,7 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case LOGIN_REJECTED:
     case GET_POLLS_REJECTED:
     case CREATE_POLL_REJECTED:
+    case GET_ONE_POLL_REJECTED:
       // to differenciate different types of errors
       if (payload.response.data.message == null) {
         return {
