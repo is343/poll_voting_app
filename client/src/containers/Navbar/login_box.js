@@ -1,5 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
+import { login } from "../../store/actions/auth";
 
 /////////////////
 // MATERIAL-UI //
@@ -110,9 +114,16 @@ class LoginBox extends React.Component {
 }
 
 LoginBox.propTypes = {
-  loginOpen: PropTypes.bool.isRequired,
-  loginOpen: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   handleLoginClose: PropTypes.func.isRequired
 };
 
-export default LoginBox;
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ login }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginBox);
