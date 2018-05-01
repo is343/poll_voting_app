@@ -2,3 +2,16 @@
   margin: none;
   padding: none;
 }
+
+.pie-container {
+  width: 400px;
+  height: 400px;
+  margin: none;
+  padding: none;
+}
+.center {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}

@@ -5,7 +5,6 @@ import createHistory from "history/createBrowserHistory";
 
 import promiseMiddleware from "redux-promise-middleware";
 import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
 
 import rootReducer from "./reducers";
 
@@ -13,17 +12,17 @@ const history = createHistory();
 
 const middleware = [routerMiddleware(history), thunk, promiseMiddleware()];
 
-if (process.env.NODE_ENV !== `production`) {
+if (process.env.REACT_APP_ENVIROMENT === `development`) {
   const logger = createLogger({ collapsed: true });
   middleware.push(logger);
 }
 
 // setup for redux devtools extension
-// const withDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const withDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(...middleware))
+  withDevTools(applyMiddleware(...middleware))
 );
 
 export { store, history };

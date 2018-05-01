@@ -25,8 +25,6 @@ const defaultState = {
 
 const pollReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
-    case GET_POLLS:
-      return payload;
     case GET_POLLS_FULFILLED:
       return { ...state, polls: payload.data };
     case GET_ONE_POLL_FULFILLED:

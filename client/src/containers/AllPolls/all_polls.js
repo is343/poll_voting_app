@@ -1,12 +1,17 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
+import { getPolls } from "../../store/actions/polls";
+
 import { withStyles } from "material-ui/styles";
 import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import Subheader from "material-ui/List/ListSubheader";
 import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 
-import PieChart from "../../components/PieChart/chart";
+import ChartWrapper from "../../components/PieChart/chart_wrapper";
 
 const styles = theme => ({
   root: {
@@ -57,20 +62,21 @@ const pieData = [
   }
 ];
 
-function AllPolls(props) {
-  const { classes } = props;
+class AllPolls extends Component {
+  componentDidMount() {
+    this.props.getPolls();
+  }
 
-  return (
-    <div className={classes.root}>
-      <GridList cellHeight={180} className={classes.gridList}>
-        <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-          <Subheader component="div">December</Subheader>
-        </GridListTile>
-        <GridListTile key="1">
-          <PieChart pieData={pieData} title={null} isMini={true} />
+  render() {
+    const { classes, polls } = this.props;
+
+    const pollsToTiles = polls.map(poll => {
+      return (
+        <GridListTile key={poll._id}>
+          <ChartWrapper pollInfo={poll} pollId={poll._id} isMini={true} />
           <GridListTileBar
-            title="test"
-            subtitle={<span>by: test</span>}
+            title={poll.title}
+            subtitle={<span>by: {poll.username}</span>}
             actionIcon={
               <IconButton className={classes.icon}>
                 <InfoIcon />
@@ -78,13 +84,38 @@ function AllPolls(props) {
             }
           />
         </GridListTile>
-      </GridList>
-    </div>
-  );
+      );
+    });
+
+    return (
+      <div className={classes.root}>
+        <GridList cellHeight={180} className={classes.gridList}>
+          <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+            <Subheader component="div">December</Subheader>
+          </GridListTile>
+          {pollsToTiles}
+        </GridList>
+      </div>
+    );
+  }
 }
 
 AllPolls.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  polls: PropTypes.array.isRequired,
+  getPolls: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(AllPolls);
+function mapStateToProps(state) {
+  return {
+    polls: state.polls.polls
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ getPolls }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(AllPolls)
+);
