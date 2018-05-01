@@ -45,15 +45,15 @@ const styles = theme => ({
 const pieData = [
   {
     name: "Jane",
-    y: 0
+    y: 21
   },
   {
     name: "John",
-    y: 0
+    y: 43
   },
   {
     name: "Joe",
-    y: 0
+    y: 12
   }
 ];
 

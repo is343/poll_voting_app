@@ -3,8 +3,11 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { login, logout, alertClose } from "../../store/actions/auth";
+import { login, logout } from "../../store/actions/auth";
 import { navigateTo } from "../../store/actions/general";
+
+import AlertBox from "./alert_box";
+import LoginBox from "./login_box";
 
 /////////////////
 // MATERIAL-UI //
@@ -39,16 +42,16 @@ const styles = {
   menuButton: {
     marginLeft: -12,
     marginRight: 20
+  },
+  menuItem: {
+    width: "100%"
   }
 };
 
 class Navbar extends React.Component {
   state = {
     loginOpen: false,
-    anchorEl: null,
-    username: "",
-    password: "",
-    submitAttempt: false
+    anchorEl: null
   };
 
   handleMenu = event => {
@@ -64,140 +67,105 @@ class Navbar extends React.Component {
   };
 
   handleLoginClose = () => {
-    this.setState({
-      loginOpen: false,
-      username: "",
-      password: "",
-      submitAttempt: false
-    });
-  };
-
-  handleLoginFieldsChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
-
-  handleSubmit = event => {
-    const { username, password } = this.state;
-    const blankUsername = username === "";
-    const blankPassword = password === "";
-    if (blankUsername || blankPassword) {
-      return this.setState({ submitAttempt: true });
-    }
-    this.props.login(username, password);
-    this.setState({
-      loginOpen: false,
-      username: "",
-      password: "",
-      submitAttempt: false
-    });
+    this.setState({ loginOpen: false });
   };
 
   render() {
     const { classes, auth } = this.props;
-    const { anchorEl, username, password, submitAttempt } = this.state;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
-    return <div className={classes.root}>
+    return (
+      <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={() => this.props.navigateTo("/")}>
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+              onClick={() => this.props.navigateTo("/")}
+            >
               <HomeIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.flex}
+            >
               Title
             </Typography>
-            {auth ? <div>
-                <IconButton aria-owns={open ? "menu-appbar" : null} aria-haspopup="true" onClick={this.handleMenu} color="inherit">
+            {auth ? (
+              <div>
+                <IconButton
+                  aria-owns={open ? "menu-appbar" : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
                   <AccountCircle />
                 </IconButton>
-                <Menu id="menu-appbar" anchorEl={anchorEl} anchorOrigin={{ vertical: "top", horizontal: "right" }} transformOrigin={{ vertical: "top", horizontal: "right" }} open={open} onClose={this.handleClose}>
-                  <MenuItem onClick={() => {
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <MenuItem
+                    className={classes.menuItem}
+                    onClick={() => {
                       this.handleClose();
                       this.props.navigateTo("/poll");
-                    }}>
+                    }}
+                  >
                     Create Poll
                   </MenuItem>
-                  <MenuItem onClick={() => {
+                  <MenuItem
+                    className={classes.menuItem}
+                    onClick={() => {
                       this.handleClose();
                       this.props.logout();
                       this.props.navigateTo("/");
-                    }}>
+                    }}
+                  >
                     Logout
                   </MenuItem>
                 </Menu>
-              </div> : <div>
-                <Button color="inherit" onClick={this.handleLoginClickOpen}>
-                  Login
-                </Button>
-                <Dialog open={this.state.loginOpen} onClose={this.handleLoginClose} aria-labelledby="form-dialog-title">
-                  <DialogTitle id="form-dialog-title">Login</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>* required</DialogContentText>
-                    <TextField autoFocus required margin="dense" id="name" label="username" name="username" fullWidth onChange={this.handleLoginFieldsChange} error={username === "" && submitAttempt === true} helperText={submitAttempt === true ? (username === "" ? "Username required!" : "") : ""} />
-                    <TextField required margin="dense" id="password-input" label="password" name="password" type="password" fullWidth onChange={this.handleLoginFieldsChange} error={password === "" && submitAttempt === true}
-          helperText={
-            submitAttempt === true
-              ? password === ""
-                ? "Password required!"
-                : ""
-              : ""
-          } />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={this.handleLoginClose} color="secondary">
-                      Cancel
-                    </Button>
-                    <Button onClick={this.handleSubmit} color="primary">
-                      Login
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>}
+              </div>
+            ) : (
+              <Button color="inherit" onClick={this.handleLoginClickOpen}>
+                Login
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
-        <Dialog open={this.props.alert} onClose={this.props.alertClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-          <DialogTitle id="alert-dialog-title">Error</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {this.props.errorMessage}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.props.alertClose} color="primary" autoFocus>
-              Okay
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>;
+        <LoginBox
+          loginOpen={this.state.loginOpen}
+          handleLoginClose={this.state.handleLoginClose}
+        />
+        <AlertBox />
+      </div>
+    );
   }
 }
 
 Navbar.propTypes = {
   classes: PropTypes.object.isRequired,
   auth: PropTypes.bool.isRequired,
-  alert: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
-  navigateTo: PropTypes.func.isRequired,
-  alertClose: PropTypes.func.isRequired
+  navigateTo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth.auth,
-    alert: state.auth.alert,
-    errorMessage: state.auth.errorMessage
+    auth: state.auth.auth
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    { login, logout, navigateTo, alertClose },
-    dispatch
-  );
+  return bindActionCreators({ login, logout, navigateTo }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
