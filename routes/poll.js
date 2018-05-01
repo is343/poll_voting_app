@@ -46,7 +46,10 @@ function voteOnPoll(req, res) {
   const choiceIndex = req.body.choiceId; // index of choice from choices
   db.Poll.findById(req.params.pollId, (err, foundPoll) => {
     if (err) {
-      res.status(400).json(err);
+      return res.status(400).json(err);
+    } else if (choiceIndex >= foundPoll.votes.length) {
+      // if for some reason you're voting for an index outside the array
+      return res.status(400).json({ error: "That choice doesn't exist" });
     } else {
       let newValue = foundPoll.votes[choiceIndex] + 1;
       foundPoll.votes.set(choiceIndex, newValue); // need .set for altering mongoose arrays
