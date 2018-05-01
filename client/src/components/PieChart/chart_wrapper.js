@@ -30,7 +30,7 @@ import { CircularProgress } from "material-ui/Progress";
 
 class ChartWrapper extends Component {
   render() {
-    const { classes, isMini } = this.props;
+    const { classes, isMini, withTitle } = this.props;
     const pollId = this.props.pollId;
 
     let pieData;
@@ -68,6 +68,7 @@ class ChartWrapper extends Component {
                 title={title}
                 pollId={pollId}
                 isMini={isMini}
+                withTitle={withTitle}
               />
             ) : (
               <div className="center">

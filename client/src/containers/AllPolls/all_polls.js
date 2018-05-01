@@ -5,13 +5,19 @@ import { connect } from "react-redux";
 
 import { getPolls } from "../../store/actions/polls";
 
+/////////////////
+// MATERIAL-UI //
+/////////////////
 import { withStyles } from "material-ui/styles";
 import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import Subheader from "material-ui/List/ListSubheader";
 import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
+import { CircularProgress } from "material-ui/Progress";
 
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
+
+import "./all_polls.css";
 
 const styles = theme => ({
   root: {
@@ -73,7 +79,12 @@ class AllPolls extends Component {
     const pollsToTiles = polls.map(poll => {
       return (
         <GridListTile key={poll._id}>
-          <ChartWrapper pollInfo={poll} pollId={poll._id} isMini={true} />
+          <ChartWrapper
+            pollInfo={poll}
+            pollId={poll._id}
+            isMini={true}
+            withTitle={false}
+          />
           <GridListTileBar
             title={poll.title}
             subtitle={<span>by: {poll.username}</span>}
@@ -89,12 +100,18 @@ class AllPolls extends Component {
 
     return (
       <div className={classes.root}>
-        <GridList cellHeight={180} className={classes.gridList}>
-          <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-            <Subheader component="div">December</Subheader>
-          </GridListTile>
-          {pollsToTiles}
-        </GridList>
+        {polls.length > 0 ? (
+          <GridList cellHeight={180} className={classes.gridList}>
+            <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+              <Subheader component="div">All Polls</Subheader>
+            </GridListTile>
+            {pollsToTiles}
+          </GridList>
+        ) : (
+          <div className="center">
+            <CircularProgress />
+          </div>
+        )}
       </div>
     );
   }

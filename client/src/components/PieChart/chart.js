@@ -23,7 +23,7 @@ import {
 class Poll extends Component {
   render() {
     let divStyle = { height: 400, width: 400 };
-    let pieCenter = [170, 150];
+    let pieCenter = [170, 100];
     let pieSize = [150];
     // to allow for resizing for the main page
     if (this.props.isMini) {
@@ -32,15 +32,15 @@ class Poll extends Component {
       pieSize = [50];
     }
 
-    const { title, pieData } = this.props;
+    const { title, pieData, pollId, withTitle } = this.props;
 
     return (
       <div className="pie" style={divStyle}>
         <HighchartsChart>
-          <Title>{title}</Title>
+          {withTitle ? <Title>{title}</Title> : null}
           <PieSeries
-            id={title}
-            name={title}
+            id={pollId}
+            name={pollId}
             data={pieData}
             center={pieCenter}
             size={pieSize}

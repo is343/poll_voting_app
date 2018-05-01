@@ -22,6 +22,7 @@ class Poll extends Component {
         pollInfo={this.props.activePoll}
         pollId={pollId}
         isMini={false}
+        withTitle={true}
       />
     );
   }
