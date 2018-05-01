@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { login } from "../../store/actions/auth";
+import { login, loginBoxClose } from "../../store/actions/auth";
 
 /////////////////
 // MATERIAL-UI //
@@ -24,13 +24,13 @@ class LoginBox extends React.Component {
     submitAttempt: false
   };
 
-  localHandleLoginClose = () => {
+  handleLoginClose = () => {
     this.setState({
       username: "",
       password: "",
       submitAttempt: false
     });
-    this.props.handleLoginClose();
+    this.props.loginBoxClose();
   };
 
   handleLoginFieldsChange = event => {
@@ -47,17 +47,17 @@ class LoginBox extends React.Component {
       return this.setState({ submitAttempt: true });
     }
     this.props.login(username, password);
-    this.localHandleLoginClose();
+    this.handleLoginClose();
   };
 
   render() {
-    const { loginOpen } = this.props;
+    const { loginIsOpen } = this.props;
     const { username, password, submitAttempt } = this.state;
 
     return (
       <Dialog
-        open={loginOpen}
-        onClose={this.localHandleLoginClose}
+        open={loginIsOpen}
+        onClose={this.handleLoginClose}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
@@ -101,7 +101,7 @@ class LoginBox extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.localHandleLoginClose} color="secondary">
+          <Button onClick={this.handleLoginClose} color="secondary">
             Cancel
           </Button>
           <Button onClick={this.handleSubmit} color="primary">
@@ -114,16 +114,17 @@ class LoginBox extends React.Component {
 }
 
 LoginBox.propTypes = {
+  loginIsOpen: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
-  handleLoginClose: PropTypes.func.isRequired
+  loginBoxClose: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-  return {};
+  return { loginIsOpen: state.auth.loginIsOpen };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ login }, dispatch);
+  return bindActionCreators({ login, loginBoxClose }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginBox);

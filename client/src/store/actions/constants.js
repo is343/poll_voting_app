@@ -6,6 +6,8 @@ export const LOGIN_FULFILLED = "LOGIN_FULFILLED";
 export const LOGIN_REJECTED = "LOGIN_REJECTED";
 export const LOGOUT = "LOGOUT";
 export const ALERT_CLOSE = "ALERT_CLOSE";
+export const LOGIN_BOX_OPEN = "LOGIN_BOX_OPEN";
+export const LOGIN_BOX_CLOSE = "LOGIN_BOX_CLOSE";
 export const REQUEST_REJECTED = "CREATE_POLL_REJECTED";
 
 ///////////

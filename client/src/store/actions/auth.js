@@ -1,4 +1,10 @@
-import { LOGIN, LOGOUT, ALERT_CLOSE } from "./constants";
+import {
+  LOGIN,
+  LOGOUT,
+  ALERT_CLOSE,
+  LOGIN_BOX_OPEN,
+  LOGIN_BOX_CLOSE
+} from "./constants";
 import axios from "axios";
 
 export function login(username, password) {
@@ -16,4 +22,12 @@ export function logout() {
 
 export function alertClose() {
   return { type: ALERT_CLOSE, payload: { alert: false } };
+}
+
+export function loginBoxOpen() {
+  return { type: LOGIN_BOX_OPEN, payload: { loginIsOpen: true } };
+}
+
+export function loginBoxClose() {
+  return { type: LOGIN_BOX_CLOSE, payload: { loginIsOpen: false } };
 }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { login, logout } from "../../store/actions/auth";
+import { login, logout, loginBoxOpen } from "../../store/actions/auth";
 import { navigateTo } from "../../store/actions/general";
 
 import AlertBox from "./alert_box";
@@ -50,7 +50,6 @@ const styles = {
 
 class Navbar extends React.Component {
   state = {
-    loginOpen: false,
     anchorEl: null
   };
 
@@ -62,16 +61,8 @@ class Navbar extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  handleLoginClickOpen = () => {
-    this.setState({ loginOpen: true });
-  };
-
-  handleLoginClose = () => {
-    this.setState({ loginOpen: false });
-  };
-
   render() {
-    const { classes, auth } = this.props;
+    const { classes, auth, loginBoxOpen } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -134,16 +125,13 @@ class Navbar extends React.Component {
                 </Menu>
               </div>
             ) : (
-              <Button color="inherit" onClick={this.handleLoginClickOpen}>
+              <Button color="inherit" onClick={loginBoxOpen}>
                 Login
               </Button>
             )}
           </Toolbar>
         </AppBar>
-        <LoginBox
-          loginOpen={this.state.loginOpen}
-          handleLoginClose={this.state.handleLoginClose}
-        />
+        <LoginBox />
         <AlertBox />
       </div>
     );
@@ -155,6 +143,7 @@ Navbar.propTypes = {
   auth: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  loginBoxOpen: PropTypes.func.isRequired,
   navigateTo: PropTypes.func.isRequired
 };
 
@@ -165,7 +154,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ login, logout, navigateTo }, dispatch);
+  return bindActionCreators(
+    { login, logout, loginBoxOpen, navigateTo },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(

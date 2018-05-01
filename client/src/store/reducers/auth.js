@@ -3,6 +3,8 @@ import {
   LOGIN_REJECTED,
   LOGOUT,
   ALERT_CLOSE,
+  LOGIN_BOX_OPEN,
+  LOGIN_BOX_CLOSE,
   GET_POLLS_REJECTED,
   GET_ONE_POLL_REJECTED,
   CREATE_POLL_REJECTED,
@@ -12,7 +14,8 @@ import {
 const defaultState = {
   auth: localStorage.getItem("token") ? true : false,
   alert: false,
-  errorMessage: ""
+  errorMessage: "",
+  loginIsOpen: false
 };
 
 const authReducer = (state = defaultState, { type, payload }) => {
@@ -50,13 +53,10 @@ const authReducer = (state = defaultState, { type, payload }) => {
       return { ...state, auth: payload.auth };
     case ALERT_CLOSE:
       return { ...state, alert: payload.alert, errorMessage: "" };
-    // case GET_POLLS_REJECTED:
-    //   return {
-    //     ...state,
-    //     auth: false,
-    //     alert: true,
-    //     errorMessage: payload.response.data.message
-    //   };
+    case LOGIN_BOX_OPEN:
+      return { ...state, loginIsOpen: payload.loginIsOpen };
+    case LOGIN_BOX_CLOSE:
+      return { ...state, loginIsOpen: payload.loginIsOpen };
     default:
       return state;
   }
