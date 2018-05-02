@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { getPolls } from "../../store/actions/polls";
+import { navigateTo } from "../../store/actions/general";
 
 /////////////////
 // MATERIAL-UI //
@@ -78,7 +79,10 @@ class AllPolls extends Component {
 
     const pollsToTiles = polls.map(poll => {
       return (
-        <GridListTile key={poll._id}>
+        <GridListTile
+          key={poll._id}
+          onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}
+        >
           <ChartWrapper
             pollInfo={poll}
             pollId={poll._id}
@@ -130,7 +134,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getPolls }, dispatch);
+  return bindActionCreators({ getPolls, navigateTo }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(

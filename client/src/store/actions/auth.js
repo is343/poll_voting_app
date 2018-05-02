@@ -1,9 +1,12 @@
 import {
   LOGIN,
+  SIGNUP,
   LOGOUT,
   ALERT_CLOSE,
   LOGIN_BOX_OPEN,
-  LOGIN_BOX_CLOSE
+  LOGIN_BOX_CLOSE,
+  SIGNUP_BOX_OPEN,
+  SIGNUP_BOX_CLOSE
 } from "./constants";
 import axios from "axios";
 
@@ -13,6 +16,14 @@ export function login(username, password) {
     password
   });
   return { type: LOGIN, payload: request };
+}
+
+export function signup(username, password) {
+  const request = axios.post("/api/auth/signup", {
+    username,
+    password
+  });
+  return { type: SIGNUP, payload: request };
 }
 
 export function logout() {
@@ -30,4 +41,12 @@ export function loginBoxOpen() {
 
 export function loginBoxClose() {
   return { type: LOGIN_BOX_CLOSE, payload: { loginIsOpen: false } };
+}
+
+export function signupBoxOpen() {
+  return { type: SIGNUP_BOX_OPEN, payload: { signupIsOpen: true } };
+}
+
+export function signupBoxClose() {
+  return { type: SIGNUP_BOX_CLOSE, payload: { signupIsOpen: false } };
 }

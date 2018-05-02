@@ -1,10 +1,14 @@
 import {
   LOGIN_FULFILLED,
   LOGIN_REJECTED,
+  SIGNUP_FULFILLED,
+  SIGNUP_REJECTED,
   LOGOUT,
   ALERT_CLOSE,
   LOGIN_BOX_OPEN,
   LOGIN_BOX_CLOSE,
+  SIGNUP_BOX_OPEN,
+  SIGNUP_BOX_CLOSE,
   GET_POLLS_REJECTED,
   GET_ONE_POLL_REJECTED,
   CREATE_POLL_REJECTED,
@@ -15,7 +19,8 @@ const defaultState = {
   auth: localStorage.getItem("token") ? true : false,
   alert: false,
   errorMessage: "",
-  loginIsOpen: false
+  loginIsOpen: false,
+  signupIsOpen: false
 };
 
 const authReducer = (state = defaultState, { type, payload }) => {
@@ -23,7 +28,11 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case LOGIN_FULFILLED:
       localStorage.setItem("token", payload.data.token);
       return { ...state, auth: true };
+    case SIGNUP_FULFILLED:
+      localStorage.setItem("token", payload.data.token);
+      return { ...state, auth: true };
     case LOGIN_REJECTED:
+    case SIGNUP_REJECTED:
     case GET_POLLS_REJECTED:
     case CREATE_POLL_REJECTED:
     case GET_ONE_POLL_REJECTED:
@@ -57,6 +66,10 @@ const authReducer = (state = defaultState, { type, payload }) => {
       return { ...state, loginIsOpen: payload.loginIsOpen };
     case LOGIN_BOX_CLOSE:
       return { ...state, loginIsOpen: payload.loginIsOpen };
+    case SIGNUP_BOX_OPEN:
+      return { ...state, signupIsOpen: payload.signupIsOpen };
+    case SIGNUP_BOX_CLOSE:
+      return { ...state, signupIsOpen: payload.signupIsOpen };
     default:
       return state;
   }

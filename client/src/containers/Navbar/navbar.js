@@ -8,6 +8,7 @@ import { navigateTo } from "../../store/actions/general";
 
 import AlertBox from "./alert_box";
 import LoginBox from "./login_box";
+import SignupBox from "./signup_box";
 
 /////////////////
 // MATERIAL-UI //
@@ -132,6 +133,7 @@ class Navbar extends React.Component {
           </Toolbar>
         </AppBar>
         <LoginBox />
+        <SignupBox />
         <AlertBox />
       </div>
     );

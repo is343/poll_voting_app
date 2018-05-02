@@ -4,10 +4,15 @@
 export const LOGIN = "LOGIN";
 export const LOGIN_FULFILLED = "LOGIN_FULFILLED";
 export const LOGIN_REJECTED = "LOGIN_REJECTED";
+export const SIGNUP = "SIGNUP";
+export const SIGNUP_FULFILLED = "SIGNUP_FULFILLED";
+export const SIGNUP_REJECTED = "SIGNUP_REJECTED";
 export const LOGOUT = "LOGOUT";
 export const ALERT_CLOSE = "ALERT_CLOSE";
 export const LOGIN_BOX_OPEN = "LOGIN_BOX_OPEN";
 export const LOGIN_BOX_CLOSE = "LOGIN_BOX_CLOSE";
+export const SIGNUP_BOX_OPEN = "SIGNUP_BOX_OPEN";
+export const SIGNUP_BOX_CLOSE = "SIGNUP_BOX_CLOSE";
 export const REQUEST_REJECTED = "REQUEST_REJECTED";
 
 ///////////

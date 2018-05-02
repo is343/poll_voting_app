@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { login, loginBoxClose } from "../../store/actions/auth";
+import { login, loginBoxClose, signupBoxOpen } from "../../store/actions/auth";
 
 /////////////////
 // MATERIAL-UI //
@@ -32,6 +32,12 @@ class LoginBox extends React.Component {
     });
     this.props.loginBoxClose();
   };
+
+  handleSignupOpen = () => {
+    this.props.signupBoxOpen();
+    this.handleLoginClose();
+  };
+
 
   handleLoginFieldsChange = event => {
     this.setState({
@@ -72,13 +78,9 @@ class LoginBox extends React.Component {
             name="username"
             fullWidth
             onChange={this.handleLoginFieldsChange}
-            error={username === "" && submitAttempt === true}
+            error={username === "" && submitAttempt}
             helperText={
-              submitAttempt === true
-                ? username === ""
-                  ? "Username required!"
-                  : ""
-                : ""
+              submitAttempt ? (username === "" ? "Username required!" : "") : ""
             }
           />
           <TextField
@@ -90,19 +92,18 @@ class LoginBox extends React.Component {
             type="password"
             fullWidth
             onChange={this.handleLoginFieldsChange}
-            error={password === "" && submitAttempt === true}
+            error={password === "" && submitAttempt}
             helperText={
-              submitAttempt === true
-                ? password === ""
-                  ? "Password required!"
-                  : ""
-                : ""
+              submitAttempt ? (password === "" ? "Password required!" : "") : ""
             }
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleLoginClose} color="secondary">
             Cancel
+          </Button>
+          <Button onClick={this.handleSignupOpen} color="secondary">
+            Signup
           </Button>
           <Button onClick={this.handleSubmit} color="primary">
             Login
@@ -116,7 +117,8 @@ class LoginBox extends React.Component {
 LoginBox.propTypes = {
   loginIsOpen: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
-  loginBoxClose: PropTypes.func.isRequired
+  loginBoxClose: PropTypes.func.isRequired,
+  signupBoxOpen: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -124,7 +126,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ login, loginBoxClose }, dispatch);
+  return bindActionCreators({ login, loginBoxClose, signupBoxOpen }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginBox);
