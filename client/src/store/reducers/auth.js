@@ -33,11 +33,9 @@ const authReducer = (state = defaultState, { type, payload }) => {
       return { ...state, auth: true };
     case LOGIN_REJECTED:
     case SIGNUP_REJECTED:
-    case GET_POLLS_REJECTED:
-    case CREATE_POLL_REJECTED:
-    case GET_ONE_POLL_REJECTED:
-    case GET_USER_INFO_REJECTED:
-      // to differenciate different types of errors
+    // to differenciate different types of errors
+      localStorage.removeItem("token");
+      localStorage.removeItem("loggedInUserId");
       if (payload.response.data.message == null) {
         return {
           ...state,
@@ -52,10 +50,26 @@ const authReducer = (state = defaultState, { type, payload }) => {
         alert: true,
         errorMessage: payload.response.data.message
       };
+    case GET_POLLS_REJECTED:
+    case CREATE_POLL_REJECTED:
+    case GET_ONE_POLL_REJECTED:
+    case GET_USER_INFO_REJECTED:
+      // to differenciate different types of errors
+      if (payload.response.data.message == null) {
+        return {
+          ...state,
+          alert: true,
+          errorMessage: `${payload.message}: ${payload.response.statusText}`
+        };
+      }
+      return {
+        ...state,
+        alert: true,
+        errorMessage: payload.response.data.message
+      };
     case REQUEST_REJECTED:
       return {
         ...state,
-        auth: false,
         alert: true,
         errorMessage: `${payload.message}: ${payload.response.statusText}`
       };

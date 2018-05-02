@@ -7,7 +7,7 @@ import * as db from "../models";
 const router = express.Router({ mergeParams: true });
 
 // GET A USER'S INFO
-router.get("/:userId", getUserInfo);
+router.get("/:username", getUserInfo);
 
 // login middleware for everything below
 router.use(loginRequired);
@@ -26,7 +26,7 @@ router.delete("/:userId", deleteUser);
 //////////////////////
 
 function getUserInfo(req, res) {
-  db.User.findById(req.params.userId, (err, foundUser) => {
+  db.User.findOne({ username: req.params.username }, (err, foundUser) => {
     if (err) {
       res.status(400).json(err);
     } else {

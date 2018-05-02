@@ -81,7 +81,7 @@ class UserPage extends Component {
         {userPolls.length > 0 ? (
           <GridList cellHeight={180} className={classes.gridList}>
             <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-              <Subheader component="div">All Polls</Subheader>
+              <Subheader component="div">{username}'s Polls</Subheader>
             </GridListTile>
             {pollsToTiles}
           </GridList>
