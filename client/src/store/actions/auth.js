@@ -28,6 +28,7 @@ export function signup(username, password) {
 
 export function logout() {
   localStorage.removeItem("token");
+  localStorage.removeItem("loggedInUserId");
   return { type: LOGOUT, payload: { auth: false } };
 }
 

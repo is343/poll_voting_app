@@ -12,6 +12,7 @@ import helmet from "helmet";
 import routes from "./routes/index";
 import authRoutes from "./routes/auth";
 import pollRoutes from "./routes/poll";
+import userRoutes from "./routes/user";
 
 // Initialize the express App
 const app = express();
@@ -34,6 +35,8 @@ app.use("/api", routes);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/poll", pollRoutes);
+
+app.use("/api/user", userRoutes);
 
 ///////////////////////////////
 // ERROR HANDLING MIDDLEWARE //

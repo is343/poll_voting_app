@@ -31,4 +31,7 @@ export const CREATE_POLL_REJECTED = "CREATE_POLL_REJECTED";
 ///////////
 // USERS //
 ///////////
-export const UPDATE_USER = "REMOVE_USER";
+export const UPDATE_USER = "UPDATE_USER";
+export const GET_USER_INFO = "GET_USER_INFO";
+export const GET_USER_INFO_FULFILLED = "GET_USER_INFO_FULFILLED";
+export const GET_USER_INFO_REJECTED = "GET_USER_INFO_REJECTED";

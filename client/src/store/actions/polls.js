@@ -9,7 +9,7 @@ import { push } from "react-router-redux";
 import { history } from "../../store";
 
 export const getPolls = () => dispatch => {
-  const url = "api/polls";
+  const url = "/api/polls";
   const request = axios.get(url);
   return dispatch({ type: GET_POLLS, payload: request });
 };

@@ -1,13 +1,13 @@
-import { LOGIN } from "../actions/constants";
+import { GET_USER_INFO_FULFILLED } from "../actions/constants";
 
 const defaultState = {
-  auth: false
+  polls: [],
+  username: ''
 };
 
 const userReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
-    case LOGIN:
-      console.log(payload);
+    case GET_USER_INFO_FULFILLED:
       return payload.data;
     default:
       return state;

@@ -12,6 +12,7 @@ import {
   GET_POLLS_REJECTED,
   GET_ONE_POLL_REJECTED,
   CREATE_POLL_REJECTED,
+  GET_USER_INFO_REJECTED,
   REQUEST_REJECTED
 } from "../actions/constants";
 
@@ -26,16 +27,16 @@ const defaultState = {
 const authReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
     case LOGIN_FULFILLED:
-      localStorage.setItem("token", payload.data.token);
-      return { ...state, auth: true };
     case SIGNUP_FULFILLED:
       localStorage.setItem("token", payload.data.token);
+      localStorage.setItem("loggedInUserId", payload.data.userId);
       return { ...state, auth: true };
     case LOGIN_REJECTED:
     case SIGNUP_REJECTED:
     case GET_POLLS_REJECTED:
     case CREATE_POLL_REJECTED:
     case GET_ONE_POLL_REJECTED:
+    case GET_USER_INFO_REJECTED:
       // to differenciate different types of errors
       if (payload.response.data.message == null) {
         return {
@@ -63,11 +64,9 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case ALERT_CLOSE:
       return { ...state, alert: payload.alert, errorMessage: "" };
     case LOGIN_BOX_OPEN:
-      return { ...state, loginIsOpen: payload.loginIsOpen };
     case LOGIN_BOX_CLOSE:
       return { ...state, loginIsOpen: payload.loginIsOpen };
     case SIGNUP_BOX_OPEN:
-      return { ...state, signupIsOpen: payload.signupIsOpen };
     case SIGNUP_BOX_CLOSE:
       return { ...state, signupIsOpen: payload.signupIsOpen };
     default:

@@ -5,7 +5,7 @@ import { Route } from "react-router";
 
 import { store, history } from "./store";
 import "./App.css";
-import Users from "./containers/User/users";
+import UserPage from "./containers/User/user_page";
 import Navbar from "./containers/Navbar/navbar";
 import CreatePoll from "./containers/CreatePoll/create_poll";
 import Poll from "./containers/SinglePoll/poll";
@@ -19,10 +19,10 @@ class App extends Component {
           <Navbar />
           <ConnectedRouter history={history}>
             <div>
-              <Route exact path="/polls" component={CreatePoll} />
+              <Route exact path="/polls" component={AllPolls} />
               <Route exact path="/poll" component={CreatePoll} />
               <Route exact path="/poll/:poll" component={Poll} />
-              <Route exact path="/1" component={AllPolls} />
+              <Route exact path="/user/:userId" component={UserPage} />
             </div>
           </ConnectedRouter>
         </div>

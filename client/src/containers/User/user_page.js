@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { getPolls } from "../../store/actions/polls";
+import { getUserInfo } from "../../store/actions/users";
 import { navigateTo } from "../../store/actions/general";
 
 /////////////////
@@ -13,12 +14,10 @@ import { withStyles } from "material-ui/styles";
 import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import Subheader from "material-ui/List/ListSubheader";
 import IconButton from "material-ui/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
+import EditIcon from "@material-ui/icons/Edit";
 import { CircularProgress } from "material-ui/Progress";
 
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
-
-import "./all_polls.css";
 
 const styles = theme => ({
   root: {
@@ -38,34 +37,38 @@ const styles = theme => ({
 });
 
 
-class AllPolls extends Component {
+class UserPage extends Component {
   componentDidMount() {
+    this.props.getUserInfo(this.props.match.params.userId);
     this.props.getPolls();
   }
 
   render() {
-    const { classes, polls } = this.props;
+    const { classes, allPolls, userPolls, username } = this.props;
 
-    const pollsToTiles = polls.map(poll => {
+    let filteredPolls = allPolls.filter(poll => {
+      return (userPolls.includes(poll._id));
+    });
+
+    const pollsToTiles = filteredPolls.map(poll => {
       return (
         <GridListTile
           key={poll._id}
         >
           <span onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}>
             <ChartWrapper
-              pollInfo={poll}
-              pollId={poll._id}
-              isMini={true}
-              withTitle={false}
-              onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}
+            pollInfo={poll}
+            pollId={poll._id}
+            isMini={true}
+            withTitle={false}
             />
           </span>
           <GridListTileBar
             title={poll.title}
-            subtitle={<span>by: {poll.username}</span>}
+            subtitle={<span>click icon to edit or delete poll =></span>}
             actionIcon={
               <IconButton className={classes.icon} onClick={() => alert('clicked!')} >
-                <InfoIcon />
+                <EditIcon />
               </IconButton>
             }
           />
@@ -75,7 +78,7 @@ class AllPolls extends Component {
 
     return (
       <div className={classes.root}>
-        {polls.length > 0 ? (
+        {userPolls.length > 0 ? (
           <GridList cellHeight={180} className={classes.gridList}>
             <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
               <Subheader component="div">All Polls</Subheader>
@@ -92,22 +95,28 @@ class AllPolls extends Component {
   }
 }
 
-AllPolls.propTypes = {
+UserPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  polls: PropTypes.array.isRequired,
-  getPolls: PropTypes.func.isRequired
+  allPolls: PropTypes.array.isRequired,
+  userPolls: PropTypes.array.isRequired,
+  username: PropTypes.string.isRequired,
+  getUserInfo: PropTypes.func.isRequired,
+  getPolls: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    polls: state.polls.polls
+    allPolls: state.polls.polls,
+    userPolls: state.users.polls,
+    username: state.users.username
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getPolls, navigateTo }, dispatch);
+  return bindActionCreators({ getUserInfo, getPolls, navigateTo }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(AllPolls)
+  withStyles(styles)(UserPage)
 );

@@ -47,7 +47,7 @@ function voteOnPoll(req, res) {
   db.Poll.findById(req.params.pollId, (err, foundPoll) => {
     if (err) {
       return res.status(400).json(err);
-    } else if (choiceIndex >= foundPoll.votes.length) {
+    } else if (choiceIndex >= foundPoll.votes.length || choiceIndex < 0) {
       // if for some reason you're voting for an index outside the array
       return res.status(400).json({ error: "That choice doesn't exist" });
     } else {
