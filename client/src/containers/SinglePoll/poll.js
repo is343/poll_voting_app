@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 import { getOnePoll } from "../../store/actions/polls";
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
+import VotingCard from "../../components/Card/voting_card";
 
 import "./poll.css";
 
@@ -18,12 +19,15 @@ class Poll extends Component {
     const pollId = this.props.match.params.poll;
 
     return (
-      <ChartWrapper
-        pollInfo={this.props.activePoll}
-        pollId={pollId}
-        isMini={false}
-        withTitle={true}
-      />
+      <div>
+        <ChartWrapper
+          pollData={this.props.activePoll}
+          pollId={pollId}
+          isMini={false}
+          withTitle={true}
+        />
+        <VotingCard poll={this.props.activePoll} />
+      </div>
     );
   }
 }

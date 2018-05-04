@@ -37,10 +37,10 @@ class ChartWrapper extends Component {
     let noVotesTest = true;
     let title;
 
-    if (this.props.pollInfo) {
+    if (this.props.pollData) {
       // if we navigate to a poll that exists
-      const { choices, votes, totalVotes } = this.props.pollInfo;
-      title = this.props.pollInfo.title;
+      const { choices, votes, totalVotes } = this.props.pollData;
+      title = this.props.pollData.title;
 
       if (choices) {
         pieData = Array(choices.length).fill({
@@ -60,7 +60,7 @@ class ChartWrapper extends Component {
 
     return (
       <div className="pie-container">
-        {this.props.pollInfo ? (
+        {this.props.pollData ? (
           <div>
             {pieData && noVotesTest ? (
               <PieChart

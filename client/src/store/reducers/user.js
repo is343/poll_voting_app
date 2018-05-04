@@ -2,7 +2,7 @@ import { GET_USER_INFO_FULFILLED } from "../actions/constants";
 
 const defaultState = {
   polls: [],
-  username: ''
+  userId: ''
 };
 
 const userReducer = (state = defaultState, { type, payload }) => {

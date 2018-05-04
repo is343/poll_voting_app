@@ -17,6 +17,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import { CircularProgress } from "material-ui/Progress";
 
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
+import VotingCard from "../../components/Card/voting_card";
 
 import "./all_polls.css";
 
@@ -37,38 +38,53 @@ const styles = theme => ({
   }
 });
 
-
 class AllPolls extends Component {
+  state = {
+    infoClicked: false
+  };
+
   componentDidMount() {
     this.props.getPolls();
   }
+
+  handleInfoButton = event => {
+    this.setState({ infoClicked: true });
+  };
 
   render() {
     const { classes, polls } = this.props;
 
     const pollsToTiles = polls.map(poll => {
       return (
-        <GridListTile
-          key={poll._id}
-        >
+        <GridListTile key={poll._id}>
           <span onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}>
             <ChartWrapper
-              pollInfo={poll}
+              pollData={poll}
               pollId={poll._id}
               isMini={true}
               withTitle={false}
-              onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}
             />
           </span>
           <GridListTileBar
             title={poll.title}
-            subtitle={<span>by: {poll.username}</span>}
+            subtitle={
+              <span
+                className="link"
+                onClick={() => this.props.navigateTo(`/user/${poll.username}`)}
+              >
+                by: {poll.username}
+              </span>
+            }
             actionIcon={
-              <IconButton className={classes.icon} onClick={() => alert('clicked!')} >
+              <IconButton
+                className={classes.icon}
+                onClick={this.handleInfoButton}
+              >
                 <InfoIcon />
               </IconButton>
             }
           />
+          {this.state.infoClicked ? <VotingCard poll={poll} /> : null}
         </GridListTile>
       );
     });

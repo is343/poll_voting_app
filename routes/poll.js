@@ -43,7 +43,7 @@ function getOnePoll(req, res) {
 }
 
 function voteOnPoll(req, res) {
-  const choiceIndex = req.body.choiceId; // index of choice from choices
+  const { choiceIndex } = req.body; // index of choice from choices
   db.Poll.findById(req.params.pollId, (err, foundPoll) => {
     if (err) {
       return res.status(400).json(err);

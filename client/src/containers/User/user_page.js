@@ -36,7 +36,6 @@ const styles = theme => ({
   }
 });
 
-
 class UserPage extends Component {
   componentDidMount() {
     this.props.getUserInfo(this.props.match.params.userId);
@@ -44,30 +43,32 @@ class UserPage extends Component {
   }
 
   render() {
-    const { classes, allPolls, userPolls, username } = this.props;
+    const { classes, allPolls, userPolls, userId } = this.props;
+    const username = this.props.match.params.userId;
 
     let filteredPolls = allPolls.filter(poll => {
-      return (userPolls.includes(poll._id));
+      return userPolls.includes(poll._id);
     });
 
     const pollsToTiles = filteredPolls.map(poll => {
       return (
-        <GridListTile
-          key={poll._id}
-        >
+        <GridListTile key={poll._id}>
           <span onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}>
             <ChartWrapper
-            pollInfo={poll}
-            pollId={poll._id}
-            isMini={true}
-            withTitle={false}
+              pollData={poll}
+              pollId={poll._id}
+              isMini={true}
+              withTitle={false}
             />
           </span>
           <GridListTileBar
             title={poll.title}
-            subtitle={<span>click icon to edit or delete poll =></span>}
+            subtitle={<span>click the icon to edit or delete =></span>}
             actionIcon={
-              <IconButton className={classes.icon} onClick={() => alert('clicked!')} >
+              <IconButton
+                className={classes.icon}
+                onClick={() => alert("clicked!")}
+              >
                 <EditIcon />
               </IconButton>
             }
@@ -99,7 +100,7 @@ UserPage.propTypes = {
   classes: PropTypes.object.isRequired,
   allPolls: PropTypes.array.isRequired,
   userPolls: PropTypes.array.isRequired,
-  username: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
   getUserInfo: PropTypes.func.isRequired,
   getPolls: PropTypes.func.isRequired,
   navigateTo: PropTypes.func.isRequired
@@ -109,7 +110,7 @@ function mapStateToProps(state) {
   return {
     allPolls: state.polls.polls,
     userPolls: state.users.polls,
-    username: state.users.username
+    userId: state.users.userId
   };
 }
 
