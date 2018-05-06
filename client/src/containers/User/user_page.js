@@ -53,9 +53,6 @@ const styles = theme => ({
 });
 
 class UserPage extends Component {
-  state = {
-    editIsOpen: false
-  };
   handleEditOpen = event => {
     this.props.editBoxOpen();
   };
@@ -108,7 +105,7 @@ class UserPage extends Component {
             <div>
               <GridListTileBar
                 title={poll.title}
-                subtitle={<span>click the icon to edit or delete =></span>}
+                subtitle={<span>click the icon to delete this poll =></span>}
                 actionIcon={
                   <IconButton
                     className={classes.icon}

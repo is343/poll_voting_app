@@ -5,14 +5,8 @@ import { connect } from "react-redux";
 
 import _ from "lodash";
 
-import {
-  getPolls,
-  getOnePoll,
-  voteOnPoll,
-  deletePoll,
-  updatePoll
-} from "../../store/actions/polls";
-import { voteBoxClose } from "../../store/actions/auth";
+import { getPolls, getOnePoll, deletePoll } from "../../store/actions/polls";
+import { voteBoxClose, editBoxClose } from "../../store/actions/auth";
 
 import { withStyles } from "material-ui/styles";
 import Card, { CardActions, CardContent } from "material-ui/Card";
@@ -55,64 +49,7 @@ const styles = {
 
 class PollUpdateCard extends React.Component {
   state = {
-    title: "",
-    choices: ["", ""],
-    submitAttempt: false,
-    updatePressed: false,
     deletePressed: false
-  };
-
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
-
-  handleChangeChoice = event => {
-    // allows modification of correct choice
-    // gets the index from the name of input and applies
-    // change to correct choice index in state
-    const targetIndex = Number(event.target.name.split("-")[1]);
-    const choices = this.state.choices.map(
-      (choice, index) =>
-        // only alter the correct box
-        // return target value if index === target, else return ing
-        index === targetIndex ? event.target.value : choice
-    );
-    this.setState({ choices });
-  };
-
-  handleNewChoice = () => {
-    // allows adding of more choices
-    const { choices } = this.state;
-    // reset state and add extra choice space
-    this.setState({ choices: [...choices, ""] });
-  };
-
-  handleDeleteChoice = event => {
-    // removes choice when delete button is clicked
-    const targetIndex = Number(event.currentTarget.name.split("-")[1]);
-    let { choices } = this.state;
-    choices.splice(targetIndex, 1);
-    this.setState({ choices });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const blankTitle = this.state.title === "";
-    const blankChoices = this.state.choices.some(val => {
-      return val === "";
-    });
-    if (blankTitle || blankChoices) {
-      return this.setState({ submitAttempt: true });
-    }
-    this.props.createPoll({ ...this.state });
-    this.setState({
-      title: "",
-      choices: ["", ""],
-      submitAttempt: false,
-      deletePressed: false
-    });
   };
 
   handleDeleteButton = () => {
@@ -120,15 +57,13 @@ class PollUpdateCard extends React.Component {
   };
 
   handleDeleteNo = () => {
+    this.props.editBoxClose();
     this.setState({ deletePressed: false });
   };
 
   handleDeleteSubmit = pollId => {
     this.props.deletePoll(pollId);
     this.setState({
-      title: "",
-      choices: ["", ""],
-      submitAttempt: false,
       deletePressed: false
     });
   };
@@ -136,114 +71,12 @@ class PollUpdateCard extends React.Component {
   render() {
     const { classes, activePoll } = this.props;
 
-    const {
-      title,
-      choices,
-      submitAttempt,
-      deletePressed,
-      updatePressed
-    } = this.state;
-
-    const emptyTest = !_.isEmpty(activePoll);
-
-    let choiceInputs = null;
-
-    if (!_.isEmpty(activePoll)) {
-      choiceInputs = this.state.choices.map((choice, index) => (
-        <div key={`choice-${index}`}>
-          <TextField
-            required={index < 2 ? true : false}
-            margin="dense"
-            id="choices"
-            name={`choice-${index}`}
-            label={`Poll Choice ${index + 1}`}
-            multiline
-            rowsMax="4"
-            value={choice}
-            onChange={this.handleChangeChoice}
-            className={classes.textField}
-            margin="normal"
-            error={choices[index] === "" && submitAttempt === true}
-            helperText={
-              submitAttempt === true
-                ? index < 2
-                  ? choices[index] === ""
-                    ? "At least two choices required. Choices must not be blank!"
-                    : ""
-                  : choices[index] === ""
-                    ? "Choices may not be blank!"
-                    : ""
-                : ""
-            }
-          />
-          {choices.length > 2 ? (
-            <IconButton
-              name={`choice-${index}`}
-              onClick={this.handleDeleteChoice}
-              className={classes.button}
-              aria-label="Delete"
-            >
-              <DeleteIcon color="error" style={{ fontSize: 18 }} />
-            </IconButton>
-          ) : null}
-        </div>
-      ));
-    }
+    const { deletePressed } = this.state;
 
     return (
       <div>
         <Card className={classes.card}>
-          <CardContent>
-            {!deletePressed ? (
-              <div>
-                <div className={classes.container}>
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="title"
-                    name="title"
-                    label="Poll Title"
-                    multiline
-                    rowsMax="4"
-                    value={this.state.title}
-                    onChange={this.handleChange}
-                    className={classes.textField}
-                    margin="normal"
-                    error={title === "" && submitAttempt === true}
-                    helperText={
-                      submitAttempt === true
-                        ? title === ""
-                          ? "Title required!"
-                          : ""
-                        : ""
-                    }
-                  />
-                  {choiceInputs}
-                </div>
-                <Button
-                  type="submit"
-                  variant="raised"
-                  size="medium"
-                  color="primary"
-                  className={classes.button}
-                  onClick={this.handleSubmit}
-                >
-                  Update Poll
-                </Button>
-                <Button
-                  variant="fab"
-                  mini
-                  color="secondary"
-                  aria-label="add"
-                  onClick={this.handleNewChoice}
-                  className={classes.button}
-                >
-                  <AddIcon />
-                </Button>
-              </div>
-            ) : null}
-          </CardContent>
+          <CardContent>{!deletePressed ? <div /> : null}</CardContent>
           <CardActions>
             {!deletePressed ? (
               <Button
@@ -302,7 +135,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { getPolls, getOnePoll, voteOnPoll, voteBoxClose, deletePoll, updatePoll },
+    { getPolls, getOnePoll, editBoxClose, deletePoll },
     dispatch
   );
 }
