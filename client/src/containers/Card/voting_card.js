@@ -44,25 +44,6 @@ const styles = {
   // }
 };
 
-// {
-//     "choices": [
-//         "this",
-//         "that"
-//     ],
-//     "votes": [
-//         1,
-//         1
-//     ],
-//     "_id": "ry8bb4PTf",
-//     "title": "best?",
-//     "totalVotes": 2,
-//     "userId": "5ae9b0141c856284af068ffe",
-//     "username": "test",
-//     "createdAt": "2018-05-02T12:37:17.748Z",
-//     "updatedAt": "2018-05-02T12:39:28.159Z",
-//     "__v": 0
-// }
-
 class VotingCard extends React.Component {
   state = { choiceIndex: "" };
 
@@ -71,6 +52,9 @@ class VotingCard extends React.Component {
   };
 
   handleVoteClick = event => {
+    if (this.state.choiceIndex === "") {
+      return;
+    }
     this.props.voteOnPoll(this.state, this.props.activePoll._id);
     this.setState({ choiceIndex: "" });
     // if open from all polls page

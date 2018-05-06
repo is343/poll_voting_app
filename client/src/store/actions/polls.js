@@ -5,6 +5,7 @@ import {
   VOTE_ON_POLL,
   SNACKBAR_OPEN,
   VOTE_ON_POLL_REJECTED,
+  DELETE_POLL_REJECTED,
   REQUEST_REJECTED
 } from "./constants";
 import axios from "axios";
@@ -45,20 +46,52 @@ export const createPoll = pollData => dispatch => {
     });
 };
 
-export const voteOnPoll = (votingData, pollId) => dispatch => {
+export const deletePoll = pollId => dispatch => {
   let url = "/api/poll/" + pollId; // for some reason, if I axios.get with a string litteral it becomes `/poll/api/poll/${pollId}`
   const token = localStorage.getItem("token");
-  axios
-    .post(url, votingData, {
+  const request = axios
+    .delete(url, {
       "Content-Type": "application/json",
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
-      // to refresh chart after vote
-      // ADD POPUP
-      console.log("====================================");
-      console.log(res.data);
-      console.log("====================================");
+      dispatch({ type: SNACKBAR_OPEN, payload: res });
+      url = "/api/polls";
+      const allPollsRequest = axios.get(url);
+      return dispatch({ type: GET_POLLS, payload: allPollsRequest });
+    })
+    .catch(error => {
+      if (error.response) {
+        return dispatch({ type: DELETE_POLL_REJECTED, payload: error });
+      }
+      return dispatch({ type: REQUEST_REJECTED, payload: error });
+    });
+};
+
+export const updatePoll = pollData => dispatch => {
+  const url = "/api/poll";
+  const token = localStorage.getItem("token");
+  const request = axios
+    .post(url, pollData, {
+      "Content-Type": "application/json",
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      history.push(`/poll/${res.data._id}`);
+    })
+    .catch(error => {
+      if (error.response) {
+        return dispatch({ type: CREATE_POLL_REJECTED, payload: error });
+      }
+      return dispatch({ type: REQUEST_REJECTED, payload: error });
+    });
+};
+
+export const voteOnPoll = (votingData, pollId) => dispatch => {
+  let url = "/api/poll/" + pollId; // for some reason, if I axios.get with a string litteral it becomes `/poll/api/poll/${pollId}`
+  axios
+    .post(url, votingData)
+    .then(res => {
       dispatch({ type: SNACKBAR_OPEN, payload: res });
       const onePollRequest = axios.get(url);
       dispatch({ type: GET_ONE_POLL, payload: onePollRequest });

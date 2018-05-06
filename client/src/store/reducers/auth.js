@@ -9,6 +9,8 @@ import {
   LOGIN_BOX_CLOSE,
   VOTE_BOX_OPEN,
   VOTE_BOX_CLOSE,
+  EDIT_BOX_OPEN,
+  EDIT_BOX_CLOSE,
   SIGNUP_BOX_OPEN,
   SIGNUP_BOX_CLOSE,
   SNACKBAR_OPEN,
@@ -18,6 +20,7 @@ import {
   CREATE_POLL_REJECTED,
   GET_USER_INFO_REJECTED,
   VOTE_ON_POLL_REJECTED,
+  DELETE_POLL_REJECTED,
   REQUEST_REJECTED
 } from "../actions/constants";
 
@@ -28,6 +31,7 @@ const defaultState = {
   loginIsOpen: false,
   signupIsOpen: false,
   voteIsOpen: false,
+  editIsOpen: false,
   snackbarIsOpen: false,
   snackbarMessage: ""
 };
@@ -63,18 +67,11 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case GET_ONE_POLL_REJECTED:
     case GET_USER_INFO_REJECTED:
     case VOTE_ON_POLL_REJECTED:
-      // to differenciate different types of errors
-      if (payload.response.data.message == null) {
-        return {
-          ...state,
-          alert: true,
-          errorMessage: `${payload.message}: ${payload.response.statusText}`
-        };
-      }
+    case DELETE_POLL_REJECTED:
       return {
         ...state,
         alert: true,
-        errorMessage: payload.response.data.message
+        errorMessage: payload.message
       };
     case REQUEST_REJECTED:
       return {
@@ -92,6 +89,9 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case VOTE_BOX_OPEN:
     case VOTE_BOX_CLOSE:
       return { ...state, voteIsOpen: payload.voteIsOpen };
+    case EDIT_BOX_OPEN:
+    case EDIT_BOX_CLOSE:
+      return { ...state, editIsOpen: payload.editIsOpen };
     case SIGNUP_BOX_OPEN:
     case SIGNUP_BOX_CLOSE:
       return { ...state, signupIsOpen: payload.signupIsOpen };

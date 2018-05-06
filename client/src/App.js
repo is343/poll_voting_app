@@ -10,7 +10,7 @@ import Navbar from "./containers/Navbar/navbar";
 import CreatePoll from "./containers/CreatePoll/create_poll";
 import Poll from "./containers/SinglePoll/poll";
 import AllPolls from "./containers/AllPolls/all_polls";
-import SimpleCard from "./components/Card/voting_card";
+import SimpleCard from "./containers/Card/voting_card";
 
 class App extends Component {
   render() {

@@ -7,6 +7,8 @@ import {
   LOGIN_BOX_CLOSE,
   VOTE_BOX_OPEN,
   VOTE_BOX_CLOSE,
+  EDIT_BOX_OPEN,
+  EDIT_BOX_CLOSE,
   SIGNUP_BOX_OPEN,
   SIGNUP_BOX_CLOSE,
   SNACKBAR_OPEN,
@@ -54,6 +56,14 @@ export function voteBoxOpen() {
 
 export function voteBoxClose() {
   return { type: VOTE_BOX_CLOSE, payload: { voteIsOpen: false } };
+}
+
+export function editBoxOpen() {
+  return { type: EDIT_BOX_OPEN, payload: { editIsOpen: true } };
+}
+
+export function editBoxClose() {
+  return { type: EDIT_BOX_CLOSE, payload: { editIsOpen: false } };
 }
 
 export function signupBoxOpen() {

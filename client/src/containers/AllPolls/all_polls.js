@@ -47,11 +47,11 @@ const styles = theme => ({
   }
 });
 class AllPolls extends Component {
-  handleInfoOpen = event => {
+  handleInfoOpen = () => {
     this.props.voteBoxOpen();
   };
 
-  handleInfoClose = event => {
+  handleInfoClose = () => {
     this.props.voteBoxClose();
   };
 
@@ -133,6 +133,7 @@ class AllPolls extends Component {
 AllPolls.propTypes = {
   classes: PropTypes.object.isRequired,
   polls: PropTypes.array.isRequired,
+  voteIsOpen: PropTypes.bool.isRequired,
   getPolls: PropTypes.func.isRequired,
   getOnePoll: PropTypes.func.isRequired,
   voteBoxOpen: PropTypes.func.isRequired,

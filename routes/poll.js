@@ -13,20 +13,14 @@ router.get("/:pollId", getOnePoll);
 // CREATE - VOTE ON A POLL
 router.post("/:pollId", voteOnPoll);
 
-// login middleware for everything below
-router.use(loginRequired);
-
-// CREATE - ADD NEW POLL TO DB
-router.post("/", createPoll);
-
-// authorization middleware for everything below
-router.use(ensureCorrectUser);
+// // CREATE - ADD NEW POLL TO DB
+router.post("/", loginRequired, createPoll);
 
 // UPDATE -  EDIT POLL
-router.put("/:pollId", updatePoll);
+router.put("/:pollId", loginRequired, ensureCorrectUser, updatePoll);
 
 // DESTROY - DELETE POLL FROM DB
-router.delete("/:pollId", deletePoll);
+router.delete("/:pollId", loginRequired, ensureCorrectUser, deletePoll);
 
 //////////////////////
 // HELPER FUNCTIONS //
