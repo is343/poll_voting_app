@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { getPolls } from "../../store/actions/polls";
+import { getPolls, getOnePoll } from "../../store/actions/polls";
 import { navigateTo } from "../../store/actions/general";
 
 /////////////////
@@ -15,9 +15,16 @@ import Subheader from "material-ui/List/ListSubheader";
 import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import { CircularProgress } from "material-ui/Progress";
+import Button from "material-ui/Button";
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "material-ui/Dialog";
 
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
-import VotingCard from "../../components/Card/voting_card";
+import VotingCard from "../../containers/Card/voting_card";
 
 import "./all_polls.css";
 
@@ -37,19 +44,23 @@ const styles = theme => ({
     color: "rgba(255, 255, 255, 0.54)"
   }
 });
-
 class AllPolls extends Component {
   state = {
-    infoClicked: false
+    infoOpen: false
+  };
+
+  handleInfoOpen = event => {
+    this.setState({ infoOpen: true });
+  };
+
+  handleInfoClose = event => {
+    this.props.getPolls();
+    this.setState({ infoOpen: false });
   };
 
   componentDidMount() {
     this.props.getPolls();
   }
-
-  handleInfoButton = event => {
-    this.setState({ infoClicked: true });
-  };
 
   render() {
     const { classes, polls } = this.props;
@@ -78,13 +89,28 @@ class AllPolls extends Component {
             actionIcon={
               <IconButton
                 className={classes.icon}
-                onClick={this.handleInfoButton}
+                onClick={() => {
+                  this.props.getOnePoll(poll._id);
+                  this.handleInfoOpen();
+                }}
               >
                 <InfoIcon />
               </IconButton>
             }
           />
           {this.state.infoClicked ? <VotingCard poll={poll} /> : null}
+          <Dialog
+            open={this.state.infoOpen}
+            onClose={this.handleInfoClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogActions>
+              <Button onClick={this.handleInfoClose} color="secondary">
+                Close
+              </Button>
+            </DialogActions>
+            <VotingCard />
+          </Dialog>
         </GridListTile>
       );
     });
@@ -111,7 +137,9 @@ class AllPolls extends Component {
 AllPolls.propTypes = {
   classes: PropTypes.object.isRequired,
   polls: PropTypes.array.isRequired,
-  getPolls: PropTypes.func.isRequired
+  getPolls: PropTypes.func.isRequired,
+  getOnePoll: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -121,7 +149,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getPolls, navigateTo }, dispatch);
+  return bindActionCreators({ getPolls, getOnePoll, navigateTo }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(

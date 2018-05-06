@@ -2,6 +2,7 @@ import {
   GET_POLLS,
   GET_ONE_POLL,
   CREATE_POLL_REJECTED,
+  VOTE_ON_POLL_REJECTED,
   REQUEST_REJECTED
 } from "./constants";
 import axios from "axios";
@@ -32,13 +33,33 @@ export const createPoll = pollData => dispatch => {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
-      console.log("res", res);
-      console.log(res.data._id);
       history.push(`/poll/${res.data._id}`);
     })
     .catch(error => {
       if (error.response) {
         return dispatch({ type: CREATE_POLL_REJECTED, payload: error });
+      }
+      return dispatch({ type: REQUEST_REJECTED, payload: error });
+    });
+};
+
+export const voteOnPoll = (votingData, pollId) => dispatch => {
+  const url = "/api/poll/" + pollId; // for some reason, if I axios.get with a string litteral it becomes `/poll/api/poll/${pollId}`
+  const token = localStorage.getItem("token");
+  axios
+    .post(url, votingData, {
+      "Content-Type": "application/json",
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      // to refresh chart after vote
+      // ADD POPUP
+      const request = axios.get(url);
+      return dispatch({ type: GET_ONE_POLL, payload: request });
+    })
+    .catch(error => {
+      if (error.response) {
+        return dispatch({ type: VOTE_ON_POLL_REJECTED, payload: error });
       }
       return dispatch({ type: REQUEST_REJECTED, payload: error });
     });

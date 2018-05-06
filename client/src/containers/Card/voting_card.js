@@ -1,7 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 import _ from "lodash";
+
+import { getOnePoll, voteOnPoll } from "../../store/actions/polls";
 
 import { withStyles } from "material-ui/styles";
 import Card, { CardActions, CardContent } from "material-ui/Card";
@@ -59,17 +63,23 @@ const styles = {
 // }
 
 class VotingCard extends React.Component {
-  state = { value: "0" };
+  state = { choiceIndex: "" };
 
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    this.setState({ choiceIndex: event.target.value });
+  };
+
+  handleVoteClick = event => {
+    this.props.voteOnPoll(this.state, this.props.activePoll._id);
+    // this.props.getOnePoll(this.props.activePoll._id);
+    this.setState({ choiceIndex: "" });
   };
   render() {
-    const { classes, poll } = this.props;
+    const { classes, activePoll } = this.props;
 
     let choices = null;
-    if (!_.isEmpty(this.props.poll)) {
-      choices = poll.choices.map((choice, index) => {
+    if (!_.isEmpty(this.props.activePoll)) {
+      choices = activePoll.choices.map((choice, index) => {
         return (
           <FormControlLabel
             key={index}
@@ -96,7 +106,7 @@ class VotingCard extends React.Component {
                   aria-label="choices"
                   name="choices"
                   className={classes.group}
-                  value={this.state.value}
+                  value={this.state.choiceIndex}
                   onChange={this.handleChange}
                 >
                   {choices}
@@ -105,7 +115,14 @@ class VotingCard extends React.Component {
             </div>
           </CardContent>
           <CardActions>
-            <Button size="small">Learn More</Button>
+            <Button
+              variant="raised"
+              color="primary"
+              size="small"
+              onClick={this.handleVoteClick}
+            >
+              Vote
+            </Button>
           </CardActions>
         </Card>
       </div>
@@ -113,8 +130,21 @@ class VotingCard extends React.Component {
   }
 }
 
-VotingCard.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+// VotingCard.propTypes = {
+//   classes: PropTypes.object.isRequired,
+//   createPoll: PropTypes.func.isRequired
+// };
 
-export default withStyles(styles)(VotingCard);
+function mapStateToProps(state) {
+  return {
+    activePoll: state.polls.activePoll
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ getOnePoll, voteOnPoll }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(VotingCard)
+);

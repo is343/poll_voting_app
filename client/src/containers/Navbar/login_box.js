@@ -38,7 +38,6 @@ class LoginBox extends React.Component {
     this.handleLoginClose();
   };
 
-
   handleLoginFieldsChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -102,10 +101,14 @@ class LoginBox extends React.Component {
           <Button onClick={this.handleLoginClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={this.handleSignupOpen} color="secondary">
+          <Button
+            variant="raised"
+            onClick={this.handleSignupOpen}
+            color="secondary"
+          >
             Signup
           </Button>
-          <Button onClick={this.handleSubmit} color="primary">
+          <Button variant="raised" onClick={this.handleSubmit} color="primary">
             Login
           </Button>
         </DialogActions>

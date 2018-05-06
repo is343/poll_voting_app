@@ -13,6 +13,7 @@ import {
   GET_ONE_POLL_REJECTED,
   CREATE_POLL_REJECTED,
   GET_USER_INFO_REJECTED,
+  VOTE_ON_POLL_REJECTED,
   REQUEST_REJECTED
 } from "../actions/constants";
 
@@ -33,7 +34,7 @@ const authReducer = (state = defaultState, { type, payload }) => {
       return { ...state, auth: true };
     case LOGIN_REJECTED:
     case SIGNUP_REJECTED:
-    // to differenciate different types of errors
+      // to differenciate different types of errors
       localStorage.removeItem("token");
       localStorage.removeItem("loggedInUserId");
       if (payload.response.data.message == null) {
@@ -54,6 +55,7 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case CREATE_POLL_REJECTED:
     case GET_ONE_POLL_REJECTED:
     case GET_USER_INFO_REJECTED:
+    case VOTE_ON_POLL_REJECTED:
       // to differenciate different types of errors
       if (payload.response.data.message == null) {
         return {

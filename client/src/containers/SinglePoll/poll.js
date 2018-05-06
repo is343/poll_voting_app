@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { getOnePoll } from "../../store/actions/polls";
+import { getOnePoll, voteOnPoll } from "../../store/actions/polls";
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
-import VotingCard from "../../components/Card/voting_card";
+import VotingCard from "../../containers/Card/voting_card";
 
 import "./poll.css";
 
@@ -26,13 +26,13 @@ class Poll extends Component {
           isMini={false}
           withTitle={true}
         />
-        <VotingCard poll={this.props.activePoll} />
+        <VotingCard />
       </div>
     );
   }
 }
 
-// CreatePoll.propTypes = {
+// Poll.propTypes = {
 //   classes: PropTypes.object.isRequired,
 //   createPoll: PropTypes.func.isRequired
 // };
@@ -44,7 +44,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getOnePoll }, dispatch);
+  return bindActionCreators({ getOnePoll, voteOnPoll }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Poll);
