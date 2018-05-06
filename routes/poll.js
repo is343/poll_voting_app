@@ -55,7 +55,7 @@ function voteOnPoll(req, res) {
       foundPoll.votes.set(choiceIndex, newValue); // need .set for altering mongoose arrays
       foundPoll.totalVotes++;
       foundPoll.save();
-      return res.status(200).json({ success: "Voted" });
+      return res.status(200).json({ message: "Voted" });
     }
   });
 }
@@ -114,7 +114,7 @@ function updatePoll(req, res) {
       if (err) {
         res.status(400).json(err);
       } else {
-        return res.status(200).json({ success: "Poll updated" });
+        return res.status(200).json({ message: "Poll updated" });
       }
     }
   );
@@ -126,7 +126,7 @@ function deletePoll(req, res) {
     if (err) {
       res.status(404).json(err);
     } else {
-      return res.status(200).json({ success: "Poll deleted" });
+      return res.status(200).json({ message: "Poll deleted" });
     }
   });
 }

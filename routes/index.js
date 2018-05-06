@@ -9,7 +9,7 @@ const router = express.Router();
 
 // Get home
 router.get("/", (req, res) => {
-  res.json([{ "/api/customers": "get customer data" }]);
+  res.json([{ root: "hello there" }]);
 });
 
 // GET ALL USERS

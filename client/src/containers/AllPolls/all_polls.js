@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { getPolls, getOnePoll } from "../../store/actions/polls";
+import { voteBoxOpen, voteBoxClose } from "../../store/actions/auth";
 import { navigateTo } from "../../store/actions/general";
 
 /////////////////
@@ -14,6 +15,7 @@ import GridList, { GridListTile, GridListTileBar } from "material-ui/GridList";
 import Subheader from "material-ui/List/ListSubheader";
 import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
+import CloseIcon from "@material-ui/icons/Close";
 import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 import Dialog, {
@@ -45,17 +47,12 @@ const styles = theme => ({
   }
 });
 class AllPolls extends Component {
-  state = {
-    infoOpen: false
-  };
-
   handleInfoOpen = event => {
-    this.setState({ infoOpen: true });
+    this.props.voteBoxOpen();
   };
 
   handleInfoClose = event => {
-    this.props.getPolls();
-    this.setState({ infoOpen: false });
+    this.props.voteBoxClose();
   };
 
   componentDidMount() {
@@ -63,7 +60,7 @@ class AllPolls extends Component {
   }
 
   render() {
-    const { classes, polls } = this.props;
+    const { classes, polls, voteIsOpen } = this.props;
 
     const pollsToTiles = polls.map(poll => {
       return (
@@ -98,16 +95,15 @@ class AllPolls extends Component {
               </IconButton>
             }
           />
-          {this.state.infoClicked ? <VotingCard poll={poll} /> : null}
           <Dialog
-            open={this.state.infoOpen}
+            open={voteIsOpen}
             onClose={this.handleInfoClose}
             aria-labelledby="form-dialog-title"
           >
             <DialogActions>
-              <Button onClick={this.handleInfoClose} color="secondary">
-                Close
-              </Button>
+              <IconButton onClick={this.handleInfoClose} color="secondary">
+                <CloseIcon />
+              </IconButton>
             </DialogActions>
             <VotingCard />
           </Dialog>
@@ -139,17 +135,20 @@ AllPolls.propTypes = {
   polls: PropTypes.array.isRequired,
   getPolls: PropTypes.func.isRequired,
   getOnePoll: PropTypes.func.isRequired,
+  voteBoxOpen: PropTypes.func.isRequired,
+  voteBoxClose: PropTypes.func.isRequired,
   navigateTo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-  return {
-    polls: state.polls.polls
-  };
+  return { polls: state.polls.polls, voteIsOpen: state.auth.voteIsOpen };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getPolls, getOnePoll, navigateTo }, dispatch);
+  return bindActionCreators(
+    { getPolls, getOnePoll, navigateTo, voteBoxOpen, voteBoxClose },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(

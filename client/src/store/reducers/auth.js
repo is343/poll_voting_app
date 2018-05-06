@@ -7,8 +7,12 @@ import {
   ALERT_CLOSE,
   LOGIN_BOX_OPEN,
   LOGIN_BOX_CLOSE,
+  VOTE_BOX_OPEN,
+  VOTE_BOX_CLOSE,
   SIGNUP_BOX_OPEN,
   SIGNUP_BOX_CLOSE,
+  SNACKBAR_OPEN,
+  SNACKBAR_CLOSE,
   GET_POLLS_REJECTED,
   GET_ONE_POLL_REJECTED,
   CREATE_POLL_REJECTED,
@@ -22,7 +26,10 @@ const defaultState = {
   alert: false,
   errorMessage: "",
   loginIsOpen: false,
-  signupIsOpen: false
+  signupIsOpen: false,
+  voteIsOpen: false,
+  snackbarIsOpen: false,
+  snackbarMessage: ""
 };
 
 const authReducer = (state = defaultState, { type, payload }) => {
@@ -82,9 +89,24 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case LOGIN_BOX_OPEN:
     case LOGIN_BOX_CLOSE:
       return { ...state, loginIsOpen: payload.loginIsOpen };
+    case VOTE_BOX_OPEN:
+    case VOTE_BOX_CLOSE:
+      return { ...state, voteIsOpen: payload.voteIsOpen };
     case SIGNUP_BOX_OPEN:
     case SIGNUP_BOX_CLOSE:
       return { ...state, signupIsOpen: payload.signupIsOpen };
+    case SNACKBAR_OPEN:
+      return {
+        ...state,
+        snackbarIsOpen: true,
+        snackbarMessage: payload.data.message
+      };
+    case SNACKBAR_CLOSE:
+      return {
+        ...state,
+        snackbarIsOpen: payload.snackbarIsOpen,
+        snackbarMessage: ""
+      };
     default:
       return state;
   }

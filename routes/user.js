@@ -30,7 +30,7 @@ function getUserInfo(req, res) {
     if (err) {
       res.status(400).json(err);
     } else {
-      res.json({polls: foundUser.polls, userId: foundUser._id});
+      res.json({ polls: foundUser.polls, userId: foundUser._id });
     }
   });
 }
@@ -46,7 +46,7 @@ function updateUser(req, res) {
       if (err) {
         res.status(400).json(err);
       } else {
-        return res.status(200).json({ success: "User updated" });
+        return res.status(200).json({ message: "User updated" });
       }
     }
   );
@@ -58,7 +58,7 @@ function deleteUser(req, res) {
     if (err) {
       res.status(404).json(err);
     } else {
-      return res.status(200).json({ success: "User deleted" });
+      return res.status(200).json({ message: "User deleted" });
     }
   });
 }

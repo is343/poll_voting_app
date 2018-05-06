@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 
 import _ from "lodash";
 
-import { getOnePoll, voteOnPoll } from "../../store/actions/polls";
+import { getPolls, getOnePoll, voteOnPoll } from "../../store/actions/polls";
+import { voteBoxClose } from "../../store/actions/auth";
 
 import { withStyles } from "material-ui/styles";
 import Card, { CardActions, CardContent } from "material-ui/Card";
@@ -71,9 +72,11 @@ class VotingCard extends React.Component {
 
   handleVoteClick = event => {
     this.props.voteOnPoll(this.state, this.props.activePoll._id);
-    // this.props.getOnePoll(this.props.activePoll._id);
     this.setState({ choiceIndex: "" });
+    // if open from all polls page
+    this.props.voteBoxClose();
   };
+
   render() {
     const { classes, activePoll } = this.props;
 
@@ -142,7 +145,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getOnePoll, voteOnPoll }, dispatch);
+  return bindActionCreators(
+    { getPolls, getOnePoll, voteOnPoll, voteBoxClose },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(

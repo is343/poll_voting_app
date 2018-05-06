@@ -45,6 +45,8 @@ class UserPage extends Component {
   render() {
     const { classes, allPolls, userPolls, userId } = this.props;
     const username = this.props.match.params.userId;
+    const personalPageCheck =
+      username === localStorage.getItem("loggedInUserId");
 
     let filteredPolls = allPolls.filter(poll => {
       return userPolls.includes(poll._id);

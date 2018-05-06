@@ -9,6 +9,7 @@ import { navigateTo } from "../../store/actions/general";
 import AlertBox from "./alert_box";
 import LoginBox from "./login_box";
 import SignupBox from "./signup_box";
+import MessageSnackbar from "./snackbar";
 
 /////////////////
 // MATERIAL-UI //
@@ -135,6 +136,7 @@ class Navbar extends React.Component {
         <LoginBox />
         <SignupBox />
         <AlertBox />
+        <MessageSnackbar />
       </div>
     );
   }

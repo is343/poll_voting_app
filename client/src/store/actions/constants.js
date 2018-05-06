@@ -11,8 +11,12 @@ export const LOGOUT = "LOGOUT";
 export const ALERT_CLOSE = "ALERT_CLOSE";
 export const LOGIN_BOX_OPEN = "LOGIN_BOX_OPEN";
 export const LOGIN_BOX_CLOSE = "LOGIN_BOX_CLOSE";
+export const VOTE_BOX_OPEN = "VOTE_BOX_OPEN";
+export const VOTE_BOX_CLOSE = "VOTE_BOX_CLOSE";
 export const SIGNUP_BOX_OPEN = "SIGNUP_BOX_OPEN";
 export const SIGNUP_BOX_CLOSE = "SIGNUP_BOX_CLOSE";
+export const SNACKBAR_OPEN = "SNACKBAR_OPEN";
+export const SNACKBAR_CLOSE = "SNACKBAR_CLOSE";
 export const REQUEST_REJECTED = "REQUEST_REJECTED";
 
 ///////////
