@@ -83,12 +83,8 @@ class VotingCard extends React.Component {
         <Card className={classes.card}>
           <CardContent>
             <div className={classes.root}>
-              <FormControl
-                component="fieldset"
-                required
-                className={classes.formControl}
-              >
-                <FormLabel component="legend">Choices</FormLabel>
+              <FormControl component="fieldset" className={classes.formControl}>
+                <FormLabel component="legend">{activePoll.title}</FormLabel>
                 <RadioGroup
                   aria-label="choices"
                   name="choices"
