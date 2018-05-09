@@ -55,6 +55,19 @@ class LoginBox extends React.Component {
     this.handleLoginClose();
   };
 
+  checkForEnterPress = event => {
+    if (event.keyCode === 13) {
+      this.handleSubmit();
+    }
+  };
+
+  componentDidMount() {
+    window.addEventListener("keydown", this.checkForEnterPress);
+  }
+  componentWillMount() {
+    window.removeEventListener("keydown", this.checkForEnterPress);
+  }
+
   render() {
     const { loginIsOpen } = this.props;
     const { username, password, submitAttempt } = this.state;
