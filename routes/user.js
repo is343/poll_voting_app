@@ -30,7 +30,10 @@ function getUserInfo(req, res) {
     if (err) {
       res.status(400).json(err);
     } else {
-      res.json({ polls: foundUser.polls, userId: foundUser._id });
+      if (foundUser.polls) {
+        return res.json({ polls: foundUser.polls, userId: foundUser._id });
+      }
+      res.json({ polls: [], userId: foundUser._id });
     }
   });
 }
