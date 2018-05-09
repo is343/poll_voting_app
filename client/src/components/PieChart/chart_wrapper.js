@@ -59,7 +59,7 @@ class ChartWrapper extends Component {
     }
 
     return (
-      <div className="pie-container">
+      <div>
         {this.props.pollData ? (
           <div>
             {pieData && noVotesTest ? (

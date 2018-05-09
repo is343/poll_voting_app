@@ -68,6 +68,14 @@ const authReducer = (state = defaultState, { type, payload }) => {
     case GET_USER_INFO_REJECTED:
     case VOTE_ON_POLL_REJECTED:
     case DELETE_POLL_REJECTED:
+      if (payload.response.data.message != null) {
+        return {
+          ...state,
+          auth: false,
+          alert: true,
+          errorMessage: payload.response.data.message
+        };
+      }
       return {
         ...state,
         alert: true,

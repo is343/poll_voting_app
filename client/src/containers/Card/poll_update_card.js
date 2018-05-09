@@ -62,6 +62,7 @@ class PollUpdateCard extends React.Component {
   };
 
   handleDeleteSubmit = pollId => {
+    this.props.editBoxClose();
     this.props.deletePoll(pollId);
     this.setState({
       deletePressed: false

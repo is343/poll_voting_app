@@ -43,10 +43,6 @@ const styles = theme => ({
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper
   },
-  gridList: {
-    width: 500,
-    height: 450
-  },
   icon: {
     color: "rgba(255, 255, 255, 0.54)"
   }
@@ -92,7 +88,7 @@ class UserPage extends Component {
 
     const pollsToTiles = filteredPolls.map(poll => {
       return (
-        <GridListTile key={poll._id}>
+        <GridListTile key={poll._id} style={{ width: "200", height: "200" }}>
           <span onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}>
             <ChartWrapper
               pollData={poll}
@@ -104,8 +100,15 @@ class UserPage extends Component {
           {personalPageCheck ? (
             <div>
               <GridListTileBar
-                title={poll.title}
-                subtitle={<span>click the icon to delete this poll =></span>}
+                title={
+                  <span
+                    className="link"
+                    onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}
+                  >
+                    {poll.title}
+                  </span>
+                }
+                subtitle={<span>click icon to delete poll</span>}
                 actionIcon={
                   <IconButton
                     className={classes.icon}
@@ -134,7 +137,14 @@ class UserPage extends Component {
           ) : (
             <div>
               <GridListTileBar
-                title={poll.title}
+                title={
+                  <span
+                    className="link"
+                    onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}
+                  >
+                    {poll.title}
+                  </span>
+                }
                 subtitle={
                   <span
                     className="link"
@@ -178,8 +188,8 @@ class UserPage extends Component {
     return (
       <div className={classes.root}>
         {userPolls.length > 0 ? (
-          <GridList cellHeight={180} className={classes.gridList}>
-            <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+          <GridList cellHeight={180} cols={4}>
+            <GridListTile key="Subheader" cols={4} style={{ height: "15" }}>
               <Subheader component="div">
                 {personalPageCheck ? "Your" : `${username}'s`} polls
               </Subheader>

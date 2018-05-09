@@ -38,10 +38,6 @@ const styles = theme => ({
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper
   },
-  gridList: {
-    width: 500,
-    height: 450
-  },
   icon: {
     color: "rgba(255, 255, 255, 0.54)"
   }
@@ -64,7 +60,7 @@ class AllPolls extends Component {
 
     const pollsToTiles = polls.map(poll => {
       return (
-        <GridListTile key={poll._id}>
+        <GridListTile key={poll._id} style={{ width: "200", height: "200" }}>
           <span onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}>
             <ChartWrapper
               pollData={poll}
@@ -74,13 +70,20 @@ class AllPolls extends Component {
             />
           </span>
           <GridListTileBar
-            title={poll.title}
+            title={
+              <span
+                className="link"
+                onClick={() => this.props.navigateTo(`/poll/${poll._id}`)}
+              >
+                {poll.title}
+              </span>
+            }
             subtitle={
               <span
                 className="link"
                 onClick={() => this.props.navigateTo(`/user/${poll.username}`)}
               >
-                by: {poll.username}
+                by: <b>{poll.username}</b>
               </span>
             }
             actionIcon={
@@ -114,8 +117,8 @@ class AllPolls extends Component {
     return (
       <div className={classes.root}>
         {polls.length > 0 ? (
-          <GridList cellHeight={180} className={classes.gridList}>
-            <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+          <GridList cellHeight={180} cols={4}>
+            <GridListTile key="Subheader" cols={4} style={{ height: "15" }}>
               <Subheader component="div">All Polls</Subheader>
             </GridListTile>
             {pollsToTiles}

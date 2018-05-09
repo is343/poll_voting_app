@@ -14,7 +14,9 @@ import {
   SNACKBAR_OPEN,
   SNACKBAR_CLOSE
 } from "./constants";
+
 import axios from "axios";
+import { history } from "../../store";
 
 export function login(username, password) {
   const request = axios.post("/api/auth/login", {
@@ -25,6 +27,7 @@ export function login(username, password) {
 }
 
 export function signup(username, password) {
+  history.push(`/user/${username}`);
   const request = axios.post("/api/auth/signup", {
     username,
     password

@@ -13,13 +13,6 @@ import {
   PieSeries
 } from "react-jsx-highcharts";
 
-// .pie {
-//   width: 200px;
-//   height: 200px;
-//   margin: none;
-//   padding: none;
-// }
-
 class Poll extends Component {
   render() {
     let divStyle = { height: 400, width: 400 };
