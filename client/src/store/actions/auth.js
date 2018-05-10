@@ -27,7 +27,7 @@ export function login(username, password) {
 }
 
 export function signup(username, password) {
-  history.push(`/user/${username}`);
+  history.push("/poll");
   const request = axios.post("/api/auth/signup", {
     username,
     password

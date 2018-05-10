@@ -11,15 +11,9 @@ import { voteBoxClose } from "../../store/actions/auth";
 import { withStyles } from "material-ui/styles";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Button from "material-ui/Button";
-import Typography from "material-ui/Typography";
 
 import Radio, { RadioGroup } from "material-ui/Radio";
-import {
-  FormLabel,
-  FormControl,
-  FormControlLabel,
-  FormHelperText
-} from "material-ui/Form";
+import { FormLabel, FormControl, FormControlLabel } from "material-ui/Form";
 
 const styles = {
   card: {
@@ -36,12 +30,6 @@ const styles = {
   root: {
     display: "flex"
   }
-  // formControl: {
-  //   margin: theme.spacing.unit * 3
-  // },
-  // group: {
-  //   margin: `${theme.spacing.unit}px 0`
-  // }
 };
 
 class VotingCard extends React.Component {
@@ -113,10 +101,14 @@ class VotingCard extends React.Component {
   }
 }
 
-// VotingCard.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   createPoll: PropTypes.func.isRequired
-// };
+VotingCard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  activePoll: PropTypes.object.isRequired,
+  getPolls: PropTypes.func.isRequired,
+  getOnePoll: PropTypes.func.isRequired,
+  voteOnPoll: PropTypes.func.isRequired,
+  voteBoxClose: PropTypes.func.isRequired
+};
 
 function mapStateToProps(state) {
   return {

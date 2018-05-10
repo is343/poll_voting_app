@@ -2,14 +2,12 @@ import {
   GET_POLLS,
   GET_ONE_POLL,
   CREATE_POLL_REJECTED,
-  VOTE_ON_POLL,
   SNACKBAR_OPEN,
   VOTE_ON_POLL_REJECTED,
   DELETE_POLL_REJECTED,
   REQUEST_REJECTED
 } from "./constants";
 import axios from "axios";
-import { push } from "react-router-redux";
 import { history } from "../../store";
 
 export const getPolls = () => dispatch => {
@@ -30,7 +28,7 @@ export const getOnePoll = pollId => dispatch => {
 export const createPoll = pollData => dispatch => {
   const url = "/api/poll";
   const token = localStorage.getItem("token");
-  const request = axios
+  axios
     .post(url, pollData, {
       "Content-Type": "application/json",
       headers: { Authorization: `Bearer ${token}` }
@@ -49,7 +47,7 @@ export const createPoll = pollData => dispatch => {
 export const deletePoll = pollId => dispatch => {
   let url = "/api/poll/" + pollId; // for some reason, if I axios.get with a string litteral it becomes `/poll/api/poll/${pollId}`
   const token = localStorage.getItem("token");
-  const request = axios
+  axios
     .delete(url, {
       "Content-Type": "application/json",
       headers: { Authorization: `Bearer ${token}` }
@@ -71,7 +69,7 @@ export const deletePoll = pollId => dispatch => {
 export const updatePoll = pollData => dispatch => {
   const url = "/api/poll";
   const token = localStorage.getItem("token");
-  const request = axios
+  axios
     .post(url, pollData, {
       "Content-Type": "application/json",
       headers: { Authorization: `Bearer ${token}` }

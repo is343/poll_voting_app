@@ -22,17 +22,7 @@ import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
 import HomeIcon from "@material-ui/icons/Home";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import Switch from "material-ui/Switch";
-import { FormControlLabel, FormGroup } from "material-ui/Form";
 import Menu, { MenuItem } from "material-ui/Menu";
-import TextField from "material-ui/TextField";
-// DIALOG
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from "material-ui/Dialog";
 
 const styles = {
   root: {
@@ -85,7 +75,7 @@ class Navbar extends React.Component {
               color="inherit"
               className={classes.flex}
             >
-              Title
+              Poll Creation and Voting
             </Typography>
             {auth ? (
               <div>

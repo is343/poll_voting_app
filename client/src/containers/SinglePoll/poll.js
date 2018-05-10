@@ -15,7 +15,6 @@ class Poll extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     const pollId = this.props.match.params.poll;
 
     return (
@@ -32,10 +31,11 @@ class Poll extends Component {
   }
 }
 
-// Poll.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   createPoll: PropTypes.func.isRequired
-// };
+Poll.propTypes = {
+  activePoll: PropTypes.object.isRequired,
+  getOnePoll: PropTypes.func.isRequired,
+  voteOnPoll: PropTypes.func.isRequired
+};
 
 function mapStateToProps(state) {
   return {

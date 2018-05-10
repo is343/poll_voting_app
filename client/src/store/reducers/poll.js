@@ -1,7 +1,5 @@
 import {
-  GET_POLLS,
   GET_POLLS_FULFILLED,
-  CREATE_POLL_FULFILLED,
   GET_ONE_POLL_FULFILLED
 } from "../actions/constants";
 

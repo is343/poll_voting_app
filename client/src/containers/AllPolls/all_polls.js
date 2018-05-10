@@ -17,13 +17,7 @@ import IconButton from "material-ui/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
 import { CircularProgress } from "material-ui/Progress";
-import Button from "material-ui/Button";
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from "material-ui/Dialog";
+import Dialog, { DialogActions } from "material-ui/Dialog";
 
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
 import VotingCard from "../../containers/Card/voting_card";

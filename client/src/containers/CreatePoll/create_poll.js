@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 
 import { createPoll } from "../../store/actions/polls";
 
-import axios from "axios";
 /////////////////
 // MATERIAL-UI //
 /////////////////

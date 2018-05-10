@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
 
 import "./chart.css";
 
@@ -45,9 +43,11 @@ class Poll extends Component {
   }
 }
 
-// CreatePoll.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   createPoll: PropTypes.func.isRequired
-// };
+Poll.propTypes = {
+  title: PropTypes.string.isRequired,
+  pieData: PropTypes.array.isRequired,
+  pollId: PropTypes.string.isRequired,
+  withTitle: PropTypes.bool
+};
 
 export default withHighcharts(Poll, Highcharts);

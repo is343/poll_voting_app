@@ -3,26 +3,12 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import _ from "lodash";
-
 import { getPolls, getOnePoll, deletePoll } from "../../store/actions/polls";
-import { voteBoxClose, editBoxClose } from "../../store/actions/auth";
+import { editBoxClose } from "../../store/actions/auth";
 
 import { withStyles } from "material-ui/styles";
 import Card, { CardActions, CardContent } from "material-ui/Card";
 import Button from "material-ui/Button";
-import Typography from "material-ui/Typography";
-import Radio, { RadioGroup } from "material-ui/Radio";
-import {
-  FormLabel,
-  FormControl,
-  FormControlLabel,
-  FormHelperText
-} from "material-ui/Form";
-import TextField from "material-ui/TextField";
-import IconButton from "material-ui/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
 
 const styles = {
   card: {
@@ -39,12 +25,6 @@ const styles = {
   root: {
     display: "flex"
   }
-  // formControl: {
-  //   margin: theme.spacing.unit * 3
-  // },
-  // group: {
-  //   margin: `${theme.spacing.unit}px 0`
-  // }
 };
 
 class PollUpdateCard extends React.Component {
@@ -123,10 +103,14 @@ class PollUpdateCard extends React.Component {
   }
 }
 
-// PollUpdateCard.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   createPoll: PropTypes.func.isRequired
-// };
+PollUpdateCard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  activePoll: PropTypes.object.isRequired,
+  getPolls: PropTypes.func.isRequired,
+  getOnePoll: PropTypes.func.isRequired,
+  editBoxClose: PropTypes.func.isRequired,
+  deletePoll: PropTypes.func.isRequired
+};
 
 function mapStateToProps(state) {
   return {

@@ -24,12 +24,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import EditIcon from "@material-ui/icons/Edit";
 import CloseIcon from "@material-ui/icons/Close";
 import { CircularProgress } from "material-ui/Progress";
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from "material-ui/Dialog";
+import Dialog, { DialogActions } from "material-ui/Dialog";
 
 import ChartWrapper from "../../components/PieChart/chart_wrapper";
 import VotingCard from "../../containers/Card/voting_card";

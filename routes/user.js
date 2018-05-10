@@ -29,11 +29,10 @@ function getUserInfo(req, res) {
   db.User.findOne({ username: req.params.username }, (err, foundUser) => {
     if (err) {
       res.status(400).json(err);
+    } else if (foundUser == null) {
+      res.status(404).json({ message: "User not found" });
     } else {
-      if (foundUser.polls) {
-        return res.json({ polls: foundUser.polls, userId: foundUser._id });
-      }
-      res.json({ polls: [], userId: foundUser._id });
+      res.json({ polls: foundUser.polls, userId: foundUser._id });
     }
   });
 }
